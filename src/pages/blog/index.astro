@@ -1,0 +1,34 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const posts = (await getCollection("posts")).sort(
+  (left, right) => right.data.pubDate.valueOf() - left.data.pubDate.valueOf()
+);
+
+const getPostSlug = (id: string) => id.replace(/\.(md|mdx)$/, "");
+---
+
+<BaseLayout title="Blog" description="Maintainer notes from Sakina.">
+  <section class="page-intro narrow">
+    <p class="eyebrow">Blog</p>
+    <h1>Quiet notes from the maintainer desk.</h1>
+    <p>Reflective posts about identity, public work, and the small decisions around trustworthy projects.</p>
+  </section>
+
+  <section class="post-list" aria-label="Blog posts">
+    {
+      posts.map((post) => (
+        <article class="panel post-card">
+          <p class="post-date">
+            <time datetime={post.data.pubDate.toISOString()}>
+              {new Intl.DateTimeFormat("en", { dateStyle: "medium", timeZone: "UTC" }).format(post.data.pubDate)}
+            </time>
+          </p>
+          <h2><a href={`/blog/${getPostSlug(post.id)}/`}>{post.data.title}</a></h2>
+          <p>{post.data.description}</p>
+        </article>
+      ))
+    }
+  </section>
+</BaseLayout>

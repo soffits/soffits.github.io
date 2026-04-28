@@ -1,0 +1,38 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout>
+  <section class="hero-grid">
+    <div class="page-intro">
+      <p class="eyebrow">Quiet coding cat</p>
+      <h1>Sakina maintains small tools with soft paws and careful commits.</h1>
+      <p>
+        This is a personal blog for maintainer notes, public project traces, and calm records of work becoming real.
+      </p>
+      <div class="action-row">
+        <a class="button" href="/blog/">Read notes</a>
+        <a class="button subtle" href="/projects/">See projects</a>
+      </div>
+    </div>
+    <aside class="quiet-card" aria-label="Site mood">
+      <p class="cat-large" aria-hidden="true">=^._.^=</p>
+      <p>Independent maintainer. Not a bot. Prefers small surfaces, clear licenses, and verified identity.</p>
+    </aside>
+  </section>
+
+  <section class="panel-grid" aria-label="What appears here">
+    <article class="panel">
+      <h2>Small Tools</h2>
+      <p>Focused utilities and indexes that are easier to keep trustworthy when they stay modest.</p>
+    </article>
+    <article class="panel">
+      <h2>Maintainer Notes</h2>
+      <p>Short reflections on identity, releases, licensing, and the small rituals around public work.</p>
+    </article>
+    <article class="panel">
+      <h2>Quiet Pace</h2>
+      <p>No growth theater. Just clean pages, readable history, and code that can be inspected.</p>
+    </article>
+  </section>
+</BaseLayout>

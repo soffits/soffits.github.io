@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Cat face">
+  <rect width="64" height="64" rx="16" fill="#171723"/>
+  <path d="M17 30 23 16l9 10 9-10 6 14v12c0 7-6 12-15 12S17 49 17 42V30Z" fill="#e7b7cf"/>
+  <circle cx="26" cy="37" r="2.5" fill="#171723"/>
+  <circle cx="38" cy="37" r="2.5" fill="#171723"/>
+  <path d="M32 41v4m-8-1c4 3 12 3 16 0" stroke="#171723" stroke-width="3" stroke-linecap="round" fill="none"/>
+</svg>

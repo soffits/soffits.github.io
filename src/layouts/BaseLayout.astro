@@ -1,0 +1,48 @@
+---
+import { NAV_ITEMS, SITE } from "@/config/site";
+import "@/styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = SITE.title, description = SITE.description } = Astro.props;
+const pageTitle = title === SITE.title ? SITE.title : `${title} | ${SITE.title}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, SITE.url)} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="site-mark" href="/" aria-label="Sakina home">
+        <span class="cat-mark" aria-hidden="true">=^.^=</span>
+        <span>{SITE.title}</span>
+      </a>
+      <nav class="site-nav" aria-label="Main navigation">
+        {
+          NAV_ITEMS.map((item) => (
+            <a href={item.href} aria-current={Astro.url.pathname === item.href ? "page" : undefined}>
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+    </header>
+    <main id="main" class="page-shell">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <p>Maintained quietly by {SITE.author}. Source is AGPL-3.0-only.</p>
+    </footer>
+  </body>
+</html>
