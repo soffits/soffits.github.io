@@ -88,16 +88,9 @@ a:hover {
   text-decoration: none;
 }
 
-.site-monogram {
-  display: inline-grid;
-  place-items: center;
-  width: 1.8rem;
-  height: 1.8rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
+.cat-mark {
   color: var(--accent);
-  font-size: 0.86rem;
-  letter-spacing: 0;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
 }
 
 .site-nav {
@@ -216,13 +209,11 @@ h1 {
   padding: 1.25rem;
 }
 
-.statement-mark {
+.cat-large {
   margin: 0;
   color: var(--accent);
-  font-size: clamp(2rem, 6vw, 3.4rem);
-  font-weight: 800;
-  letter-spacing: -0.06em;
-  line-height: 0.95;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: clamp(2.4rem, 7vw, 4rem);
 }
 
 .panel-grid,

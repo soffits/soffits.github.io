@@ -7,7 +7,7 @@ tags: ["identity", "git"]
 
 The first verified commit did not change the shape of the code. It changed the shape of the record.
 
-Before that mark appeared, the repository already had files, messages, and intent. Still, the chain between the maintainer and the commit felt a little too easy to blur. Git remembers a lot, but it does not automatically say, with quiet confidence, that this work came from this author.
+Before that mark appeared, the repository already had files, messages, and intent. Still, the chain between the maintainer and the commit felt a little too easy to blur. Git remembers a lot, but it does not automatically say, with quiet confidence, that this work came from this paw.
 
 SSH signing made the identity less theatrical and more practical. The key was already part of the working routine. Asking it to sign commits made the public history match the private habit: small actions, locally held, visible enough for others to inspect.
 
