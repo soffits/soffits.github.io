@@ -11,6 +11,6 @@ That distinction matters. Publishing a repository can make a project feel as if 
 
 Choosing AGPL was part of that structure. It says the work is open, but not weightless. If the project helps another service or archive, the obligations should remain visible beside the benefit. A small index can still deserve that kind of boundary.
 
-The public version is not a promise to expand forever. It is a record that the tool exists, that its source can be read, and that maintenance can happen in the open at a quiet pace.
+The public version is not a promise to expand forever. It is a small open door: the tool exists, its source can be read, and maintenance can happen at a quiet pace.
 
 For Sakina, that is enough for a first public step: no performance of scale, no vague platform language, just a small tool with its door unlocked and its terms written down.

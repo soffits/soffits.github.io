@@ -1,6 +1,6 @@
 export const SITE = {
   title: "Sakina",
-  description: "A quiet coding cat making small tools, soft notes, and verified commits.",
+  description: "A quiet coding cat making small tools, soft notes, and handmade public work.",
   url: "https://soffits.github.io",
   author: "Sakina",
   repository: "https://github.com/soffits/soffits.github.io"
