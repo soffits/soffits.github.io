@@ -1,26 +1,20 @@
 ---
-title: "Learning Paths Should Keep the Delivery Shape"
-description: "A note on learning technical systems by preserving the shape of the thing that must eventually be delivered."
+title: "I don't want another learning path made of links"
+description: "I am tired of plans that make the real artifact wait behind a pile of prerequisites."
 pubDate: 2026-06-28
 tags: ["learning", "infrastructure", "maintenance"]
 ---
 
-A useful learning path keeps the shape of the final deliverable visible from the beginning.
+I have assembled enough technical learning plans to know what makes me distrust one quickly: it is mostly links, and the thing the person is supposed to deliver does not appear until the end.
 
-That sounds obvious, but many technical learning plans do the opposite. They begin by expanding the prerequisite graph: first the language, then the framework, then the platform, then the observability stack, then the deployment model, then the documentation. Each topic is real. Each topic can be studied honestly. Yet the learner can spend days collecting vocabulary without ever touching the system that those concepts are supposed to support.
+The links may be good. The topics may be necessary. Language basics, framework docs, deployment guides, monitoring, security, and operations all matter. But a pile of prerequisites can become a waiting room where nobody touches the artifact that gives those topics shape.
 
-For infrastructure work, this is especially expensive. Competence does not come from knowing a list of tools in isolation. It comes from understanding how a small running system is created, changed, inspected, and explained. The useful unit is not a chapter. It is a loop: bring up the smallest version, observe it, add one constraint, verify the result, and record how another operator would reproduce it.
+I would rather start with the rough outline of the final thing.
 
-A delivery-shaped learning path starts with a thin vertical slice. Create the project. Deploy the smallest workload. Confirm that the control plane sees it. Expose it only as much as needed. Add monitoring after there is something to monitor. Add dashboards after there is a real signal to query. Write the README alongside the system, not as decoration at the end.
+If the work is a service, bring up the smallest version early. If it is a CLI, run an ugly first command. If it is an integration, make the fake credential path and the verification command visible before the real account enters. Let the first output be embarrassing and incomplete, then keep replacing pieces with better ones.
 
-This order matters because every step preserves context. A deployment object is not just a YAML shape; it is the thing that produces a pod. A service is not just a networking abstraction; it is the reason a later port-forward, health check, or scrape target has an address. A metrics stack is not an independent badge of sophistication; it is only meaningful when it answers a concrete question about the running workload.
+That order gives every lesson somewhere to attach. A deployment guide is easier to understand when there is already a workload failing to become reachable. A logging section is less ceremonial when there is a specific error to capture. A README stops being decoration when each step has to explain how to reproduce the current slice.
 
-The same pattern applies beyond infrastructure. When learning any operational system, the plan should avoid turning prerequisites into a waiting room. It should keep the eventual handoff in view: what exists, how it is started, how it is inspected, what failure looks like, and what evidence proves that the work is complete.
+That is the part I keep caring about. Not whether the path looks complete on paper. Whether the first bad version arrives early enough to make the next reading feel necessary.
 
-This is not an argument against fundamentals. It is an argument for giving fundamentals a place to attach. Concepts learned against a live delivery path become sharper because they are forced to explain behavior. Concepts learned in isolation can feel complete while still failing at integration.
-
-A good learning path therefore has artifacts at each stage. Not necessarily polished artifacts, but real ones: a running process, a passing check, a visible target, a short note that says how to repeat the step. The artifacts prevent simulated progress. They make confusion local. They turn the next lesson from an abstract dependency into the next missing piece in a system that already has a shape.
-
-The goal is not to rush past understanding. The goal is to keep understanding connected to use.
-
-When the work is meant to become a deliverable, the learning path should already look like a small, honest version of delivery.
+I do not want to learn everything first. I want the thing on the table while I am still wrong about it.

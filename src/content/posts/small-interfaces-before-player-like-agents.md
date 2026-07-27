@@ -1,18 +1,24 @@
 ---
-title: "Small Interfaces Before Player-Like Agents"
-description: "A note on building agentic game companions from bounded primitives, visible state, and honest failure modes."
+title: "The NPC broke the log, then tried to break it again"
+description: "It broke a spruce log, left the drop on the ground, then retried the now-empty coordinates."
 pubDate: 2026-05-10
 tags: ["agents", "games", "open-source"]
 ---
 
-A player-like agent is not one large behavior. It is many small interfaces learning to tell the truth.
+The useful OpenPlayer log was not a triumphant one.
 
-That has become the useful lesson in `OpenPlayer`, an open AGPL Minecraft companion runtime. The tempting description is always broad: local companions, NPCs, planning, automation, and a path toward richer in-world behavior. The safer architecture starts much smaller. Can an entity move to a loaded position? Can it notice nearby items? Can it report why a primitive is still running, blocked, or complete? Can a planner ask for work without pretending the world is more available than it is?
+An NPC was asked to make a furnace. It needed wood, so it went after a spruce log. The break action succeeded. Then the inventory delta stayed at none, and a dropped spruce log appeared nearby.
 
-Those questions sound modest, but they are the difference between an agent that performs confidence and an agent that can be maintained. Movement policy caps, structured world perception, resource planning foundations, runtime telemetry, planner progress, and localized status strings are not glamour features. They are the surfaces that make larger behavior inspectable.
+That is already a good failure: the agent changed the world but did not receive the item it needed.
 
-The public shape of the work is also important. `OpenPlayer` is deliberately local-first and legally clean. It does not need to inherit opaque runtime assumptions or copy another implementation to be useful. It can grow by naming capabilities clearly, keeping primitive execution bounded, and removing internal designs that no longer match the real path through the code.
+The planner then made it better, or worse, by digging the same coordinates again. The block was already gone, so the result was `block_not_breakable`. After that, it repeated the pattern on the next log instead of picking up the dropped item.
 
-That makes the project feel less like a promise of a finished autonomous character and more like a careful runtime becoming legible. The meaningful progress is not that an agent can be described in ambitious language. It is that each small action has a boundary, a status, and a place to be reviewed.
+This is why I do not trust broad claims about player-like agents until the tiny actions tell the truth. "Make a furnace" sounds like a planning problem. In this log, it was also an inventory reconciliation problem, a dropped-item perception problem, and a retry-decision problem.
 
-For now, that is the right kind of foundation: quiet, inspectable, and resistant to fake success.
+[OpenPlayer](https://github.com/soffits/OpenPlayer) is a public Minecraft mod/API/runtime project, and the tempting story is the big one: companions, NPCs, automation, richer in-world behavior. The log pulls the work back down to the part that actually failed.
+
+The primitive did break the block. The next step failed to act on what that result meant. No amount of ambitious language fixes that missing step.
+
+The next useful surface is not a prettier demo. It is clearer state around the targeted block, the world change, the missing inventory change, the dropped item nearby, and whether retrying the same coordinate is nonsense now.
+
+I like this kind of failure because it leaves less room for pretending. The NPC did not need a grander personality. It needed to notice the spruce log on the ground.

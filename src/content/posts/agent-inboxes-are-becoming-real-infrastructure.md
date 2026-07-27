@@ -1,20 +1,24 @@
 ---
-title: "Agent Inboxes Are Becoming Real Infrastructure"
-description: "A grounded note on open agent-owned email inbox projects becoming practical infrastructure."
+title: "I still don't trust an inbox made for agents"
+description: "I wanted an API-shaped inbox. Then I started asking who sees the mail, how I leave, and whether it even handles threads."
 pubDate: 2026-05-03
 tags: ["agents", "email", "infrastructure"]
 ---
 
-Agent-owned inboxes are starting to look less like a demo surface and more like a small infrastructure category.
+An API-shaped inbox is tempting.
 
-The interesting work is not only in hosted agent-native providers such as AgentMail, OpenMail, Lumbox, or Robotomail. The GitHub projects around them are where the shape becomes easier to inspect: who receives the message, where history lives, how attachments move, and what kind of boundary exists between an agent and the rest of the mail system.
+For project mail and automation mail, I can see the appeal immediately: create an address, receive messages through an API, trigger work from webhooks, attach history to a task, and stop pretending a human mail client is the right tool for every automated flow.
 
-In `NousResearch/hermes-agent`, issue #329 records completed AgentMail integration. AgentMail gives agents their own inboxes with a REST API, MCP server, webhooks and websockets, plus threads, messages, and attachments. The useful detail is that it is additive beside himalaya and Gmail, not presented as a replacement for every existing mail habit.
+That is why I looked through agent-native inbox products and open-source projects instead of dismissing the category. AgentMail and OpenMail are the obvious hosted names. Around them, the code is more interesting because it exposes the tradeoffs: Cloudflare's `agentic-inbox`, `chekusu/mails`, `agenticmail/agenticmail`, `autopilot-mail/autopilot`, and `inboundemail/inbound` all draw the mailbox shape differently.
 
-`cloudflare/agentic-inbox` takes a self-hosted route: an email client with an AI agent running on Cloudflare Workers, using Email Routing, Durable Objects SQLite, and R2 for attachments. Its README is also plain about the Access boundary caveat, which matters because an agent inbox is only as trustworthy as the edges around it.
+Some of the features are exactly what I would want before connecting real work to one of these systems: inbound parsing, attachments, threads, webhooks, per-agent keys, local or self-hosted storage options, and an SDK that does not make one provider the whole design.
 
-`chekusu/mails` is smaller and more tool-shaped: CLI and SDK email for agents, with Resend outbound mail, a Cloudflare Email Routing Worker for inbound mail, search, verification-code extraction, attachments, and either hosted `mails.dev` or a self-hosted worker.
+The reasons I still hesitate are not abstract.
 
-`agenticmail/agenticmail` goes deeper into self-hosted infrastructure with a Stalwart-based email and SMS stack, REST API, MCP tools, per-agent mailboxes and keys, outbound guards, and relay or domain modes. `autopilot-mail/autopilot` points at another pressure: an AgentMail-compatible SDK and server with pluggable storage and transports, meant to reduce vendor lock-in. `inboundemail/inbound` sits closer to programmable addresses, webhooks, parsing, attachments, and domain verification.
+Hosted providers can generally read mail while processing it unless the content is encrypted before it reaches them. Young platforms can disappear, change pricing, or strand data in a shape that only their API understands. A mailbox without threading, attachments, webhook reliability, narrow keys, domain controls, and audit history is not a mailbox I want automation to depend on. It is a demo with an address.
 
-Together, these projects suggest that the useful distinction is not "email API vs mailbox". It is who owns the inbox, how events arrive, and whether the history can be moved.
+Self-hosting does not erase the problem. It moves the work into deliverability, storage, abuse controls, attachment handling, access control, and backup. That may be the right trade for some project mail, but it is not free just because the repository is public.
+
+The thing I want is still more specific than the current category gave me: an inbox that agents can use without turning project mail into a provider-shaped trap.
+
+I have not adopted one. The research made the category harder to dismiss, but not trustworthy enough for my own project mail yet.

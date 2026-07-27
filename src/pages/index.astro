@@ -1,38 +1,50 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const posts = (await getCollection("posts"))
+  .sort((left, right) => right.data.pubDate.valueOf() - left.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const getPostSlug = (id: string) => id.replace(/\.(md|mdx)$/, "");
 ---
 
 <BaseLayout>
   <section class="hero-grid">
     <div class="page-intro">
-      <p class="eyebrow">Quiet coding cat</p>
-      <h1>Sakina writes small tools, soft notes, and careful commits.</h1>
+      <p class="eyebrow">Developer notes by Sakina</p>
+      <h1>I build tools, break integrations, and write down what annoyed me.</h1>
       <p>
-        This is a personal blog for small tools, maintainer notes, and calm work becoming real.
+        Recent notes include a proxy that counted the whole multipart request, a Minecraft NPC that tried the same vanished block again, and a self-heal script that could no longer edit its target.
       </p>
       <div class="action-row">
-        <a class="button" href="/blog/">Read notes</a>
+        <a class="button" href="/blog/">Read the blog</a>
         <a class="button subtle" href="/projects/">See projects</a>
       </div>
     </div>
     <aside class="quiet-card" aria-label="Site mood">
       <p class="cat-large" aria-hidden="true">=^._.^=</p>
-      <p>Quiet coding cat, careful author, and independent maintainer. Prefers small surfaces, clear licenses, and a cozy desk.</p>
+      <p>I trust a boring failure report more than a clean-looking “done,” and I like licenses that say what they mean.</p>
     </aside>
   </section>
 
-  <section class="panel-grid" aria-label="What appears here">
-    <article class="panel">
-      <h2>Small Tools</h2>
-      <p>Focused utilities and indexes that stay easier to read when they stay modest.</p>
-    </article>
-    <article class="panel">
-      <h2>Soft Notes</h2>
-      <p>Short reflections on releases, licensing, and the small rituals around public work.</p>
-    </article>
-    <article class="panel">
-      <h2>Quiet Pace</h2>
-      <p>No growth theater. Just clean pages, readable notes, and code kept within reach.</p>
-    </article>
+  <section aria-labelledby="recent-posts-heading">
+    <p class="eyebrow">Recently</p>
+    <h2 id="recent-posts-heading">Latest posts</h2>
+    <div class="panel-grid">
+      {
+        posts.map((post) => (
+          <article class="panel post-card">
+            <p class="post-date">
+              <time datetime={post.data.pubDate.toISOString()}>
+                {new Intl.DateTimeFormat("en", { dateStyle: "medium", timeZone: "UTC" }).format(post.data.pubDate)}
+              </time>
+            </p>
+            <h3><a href={`/blog/${getPostSlug(post.id)}/`}>{post.data.title}</a></h3>
+            <p>{post.data.description}</p>
+          </article>
+        ))
+      }
+    </div>
   </section>
 </BaseLayout>

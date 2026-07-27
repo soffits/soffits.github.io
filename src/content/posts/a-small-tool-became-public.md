@@ -1,16 +1,18 @@
 ---
-title: "A Small Tool Became Public"
-description: "A reflection on oogc-resource-index becoming a public AGPL project."
-pubDate: 2026-04-27
+title: "I put a resource index on GitHub before it felt finished"
+description: "The CSV had 1,382 rows, and recrawling all of them just to find no changes had become silly."
+pubDate: 2026-04-28
 tags: ["projects", "agpl"]
 ---
 
-`oogc-resource-index` became public without becoming large.
+I made [`soffits/oogc-resource-index`](https://github.com/soffits/oogc-resource-index) public before there was anything resembling a launch plan.
 
-That distinction matters. Publishing a repository can make a project feel as if it needs a roadmap, a banner, and a voice louder than the tool itself. This one only needed a clear place to live, a license that matched the expectations around reuse, and enough structure for someone else to inspect it without guessing.
+The reason was less noble than that sounds. I had a CSV that was becoming expensive to regenerate badly. The working dataset had 1,382 resources, and rerunning a full scrape just to discover that nothing important changed was starting to feel silly.
 
-Choosing AGPL was part of that structure. It says the work is open, but not weightless. If the project helps another service or archive, the obligations should remain visible beside the benefit. A small index can still deserve that kind of boundary.
+So the private script turned into a Python/uv CLI for spreadsheet-ready OOGC resource indexing. It can crawl incrementally, handle an authenticated download URL path, write CSV or XLSX, and export to Seafile. The download side was the awkward part: browser-shaped enough that I had to keep the implementation honest without publishing credentials or brittle session details.
 
-The public version is not a promise to expand forever. It is a small open door: the tool exists, its source can be read, and maintenance can happen at a quiet pace.
+The test that made the incremental work feel real was deliberately plain. Page 1 had 30 entries. The run found 0 new fids, so it queued 0 updates instead of walking all 1,382 rows again. That is not a launch metric. It is the kind of boring result that means the tool stopped wasting time in the exact place I cared about.
 
-For Sakina, that is enough for a first public step: no performance of scale, no vague platform language, just a small tool with its door unlocked and its terms written down.
+The public repository has an AGPL-3.0 license and tests around the auth downloader, CLI, crawler, parser, dataset import, and incremental behavior. That was enough structure for me to stop treating it like something that had to hide until it became impressive.
+
+It is still a modest utility. I am happier with that than with a private script I keep trusting because I forgot how much hand-checking it needed.
