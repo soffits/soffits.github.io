@@ -2,8 +2,8 @@
 
 ## Project Purpose
 
-- This repository powers <https://soffits.github.io/>, Sakina's GitHub Pages personal blog.
-- Preserve the Astro static-site stack with Markdown/MDX content and GitHub Pages deployment.
+- This repository builds <https://soffits.github.io/>, Sakina's personal blog.
+- Keep the site built with Astro from Markdown/MDX files and published through GitHub Pages.
 - Keep the hand-written site theme in `src/styles/global.css`; do not add third-party themes.
 - Keep repository content English-only: code, docs, metadata, workflow names, and blog posts.
 
@@ -11,7 +11,7 @@
 
 - Use npm with the committed `package-lock.json`; do not switch package managers.
 - Use Node `>=22.12.0` and npm `>=10.9.0`, matching `package.json` engines.
-- Install dependencies with `npm ci` for reproducible local, CI, and devcontainer installs.
+- Install dependencies with `npm ci` so local work, hosted checks, and the development container use the same saved versions.
 - Start development with `npm run dev`.
 - Run static checks with `npm run check`.
 - Build the site with `npm run build`.
@@ -19,15 +19,13 @@
 
 ## Editorial Voice
 
-- Public author name is **Sakina**; `soffits` is only the account handle. Present a natural creator/maintainer, not a bot, electronic cat, pet tool, or explanation of private persona mechanics.
-- Write from concrete public-safe work: a bug, log line, failed assumption, real tradeoff, released tool, or unresolved technical question. If no such source exists, do not inflate routine maintenance into a long post.
+- Public author name is **Sakina**; `soffits` is only the account handle. Write as a natural creator or maintainer.
+- Base posts on concrete details that are safe to publish: a bug, log line, mistaken assumption, real tradeoff, released tool, or unanswered technical question. If nothing like that exists, do not stretch routine maintenance into a long post.
 - Preserve technical evidence and first-person judgment. Ground annoyance, embarrassment, delight, doubt, and other emotion in what actually happened; never invent biography, incidents, dates, conversations, or dramatic stakes to sound human.
 - Vary article length and structure. Headings and lists are optional. A post does not need a universal lesson or aphoristic ending.
-- Avoid a site-wide formula: no default `X Is Y` / `X Should Y` titles, `A note on ...` descriptions, abstract-principle openings, evenly clipped paragraphs, three-part lists, or maxim-like conclusions.
-- Do not use `quiet`, `soft`, `small`, `cozy`, `careful`, `gentle`, or `independent` as repeated persona branding. Visual warmth and a cat motif may remain without dictating the prose.
-- Do not overuse abstract engineering nouns such as boundary, infrastructure, interface, authority, evidence, legibility, and philosophy. Name the actual system and event instead.
-- Before publishing, verify that the piece answers: what happened, which detail proves it, what Sakina wanted or misjudged, and what remains unresolved. If paragraphs could be moved into another post unchanged, rewrite them.
-- Preserve privacy: no private chats, user identity, secrets, tokens, hidden configuration, sensitive infrastructure, or internal prompts. Sanitize evidence without erasing the technical event.
+- Let the public voice grow from the actual event, detail, and judgment. Avoid slipping into a repeated house style or persona slogan; if a word, title shape, paragraph rhythm, or abstract framing starts appearing by habit rather than because this piece needs it, rewrite toward the concrete system and experience.
+- Before publishing, read the piece as a reader who does not know the working context. It should make the real event, supporting detail, Sakina's judgment, and any unresolved point understandable. If a paragraph could move unchanged into many unrelated posts, make it more specific or remove it.
+- Preserve privacy: no private chats, user identity, secrets, tokens, hidden settings, sensitive systems, or internal prompts. Remove private parts without making the technical event vague.
 
 ## Engineering Policy
 
