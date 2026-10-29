@@ -3,6 +3,7 @@ import IconArrowLeft from "@/assets/icons/IconArrowLeft.svg";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import { getPostUrl } from "@/utils/getPostPaths";
 import { useTranslations } from "@/i18n";
+import { keepTokensHtml } from "@/utils/keepTokens";
 import config from "@/config";
 
 type AdjacentPost = {
@@ -29,12 +30,16 @@ const t = useTranslations(locale);
     prevPost && (
       <a
         href={getPostUrl(prevPost.id, prevPost.filePath, locale)}
+        data-direction="prev"
         class="flex w-full gap-1 hover:opacity-75"
       >
         <IconArrowLeft class="inline-block flex-none rtl:rotate-180" />
         <div>
           <span>{t.post.previousPost}</span>
-          <div class="text-accent/85 text-sm">{prevPost.title}</div>
+          <div
+            class="text-accent/85 text-sm"
+            set:html={keepTokensHtml(prevPost.title)}
+          />
         </div>
       </a>
     )
@@ -43,11 +48,15 @@ const t = useTranslations(locale);
     nextPost && (
       <a
         href={getPostUrl(nextPost.id, nextPost.filePath, locale)}
+        data-direction="next"
         class="flex w-full justify-end gap-1 text-end hover:opacity-75 sm:col-start-2"
       >
         <div>
           <span>{t.post.nextPost}</span>
-          <div class="text-accent/85 text-sm">{nextPost.title}</div>
+          <div
+            class="text-accent/85 text-sm"
+            set:html={keepTokensHtml(nextPost.title)}
+          />
         </div>
         <IconArrowRight class="inline-block flex-none rtl:rotate-180" />
       </a>

@@ -19,6 +19,7 @@ import {
 import { transformerFileName } from "./src/utils/transformers/fileName";
 import config from "./astro-paper.config";
 import { redirects } from "./src/redirects";
+import { rehypeKeepTokens } from "./src/utils/keepTokens";
 
 export default defineConfig({
   site: config.site.url,
@@ -45,7 +46,8 @@ export default defineConfig({
         remarkToc,
         [remarkCollapse, { test: "Table of contents" }],
       ],
-      rehypePlugins: [rehypeCallouts],
+      // Sakina: rehypeKeepTokens keeps names and inline code from splitting
+      rehypePlugins: [rehypeCallouts, rehypeKeepTokens],
     }),
     shikiConfig: {
       // Sakina: code block themes

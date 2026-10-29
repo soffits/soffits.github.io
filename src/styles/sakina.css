@@ -23,6 +23,43 @@ body {
   font-feature-settings: "kern", "liga";
 }
 
+/* Round 2: wrapping. Headings balance, paragraphs avoid orphans, and
+   tokens marked by src/utils/keepTokens.ts never split mid-name. */
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+p,
+li,
+blockquote {
+  text-wrap: pretty;
+}
+
+.nobr {
+  white-space: nowrap;
+}
+
+/* Long tokens (hashes, file names): whole on wide screens, wrap anywhere
+   on phones rather than overflow. */
+.break-any {
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 640px) {
+  .break-any {
+    white-space: nowrap;
+  }
+}
+
+/* One divider style everywhere: solid hairlines. */
+hr,
+.border-dashed {
+  border-style: solid;
+}
+
 ::selection {
   background: color-mix(in srgb, var(--accent) 22%, transparent);
   color: var(--foreground);
@@ -93,8 +130,6 @@ samp {
 #featured > h2,
 #recent-posts > h2,
 .post-kicker,
-.post-meta,
-.post-card time,
 nav[aria-label="breadcrumb"] {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -109,6 +144,7 @@ nav[aria-label="breadcrumb"] {
 
 nav[aria-label="breadcrumb"] :is(a, span) {
   text-transform: uppercase;
+  opacity: 1;
 }
 
 nav[aria-label="breadcrumb"] span[aria-hidden="true"] {
@@ -118,7 +154,6 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"] {
 nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
   content: "/";
   font-size: 0.75rem;
-  opacity: 0.6;
 }
 
 /* ===== Buttons ===== */
@@ -129,7 +164,7 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
   gap: 0.5rem;
   min-height: 2.75rem;
   padding: 0.6rem 1.1rem;
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in srgb, var(--foreground) 55%, transparent);
   border-radius: 6px;
   font-family: var(--font-display);
   font-size: 0.95rem;
@@ -169,8 +204,7 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
 .hero {
   position: relative;
   isolation: isolate;
-  padding: 4.5rem 0 3.5rem;
-  border-bottom: 1px solid var(--border);
+  padding: 4.5rem 0 1rem;
 }
 
 /* Faint engineering grid behind the hero, fading out from the headline. */
@@ -181,7 +215,7 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
   top: 0;
   bottom: 0;
   left: 50%;
-  width: 100vw;
+  width: min(100vw, 72rem);
   transform: translateX(-50%);
   background-image:
     linear-gradient(var(--border) 1px, transparent 1px),
@@ -189,11 +223,11 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
   background-size: 2.5rem 2.5rem;
   background-position: center top;
   mask-image: radial-gradient(
-    ellipse 55% 75% at 35% 30%,
+    ellipse 50% 60% at 50% 40%,
     #000 0%,
-    transparent 78%
+    transparent 75%
   );
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 .hero-eyebrow {
@@ -275,6 +309,10 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
   text-underline-offset: 3px;
 }
 
+.hero-note a {
+  white-space: nowrap;
+}
+
 .hero-note a:hover,
 .project-more a:hover {
   color: var(--accent);
@@ -284,7 +322,8 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
 
 #featured,
 #recent-posts {
-  padding-top: 3rem;
+  padding-top: 3.5rem;
+  padding-bottom: 0;
 }
 
 #featured > h2,
@@ -301,6 +340,11 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
   flex: 1;
   height: 1px;
   background: var(--border);
+}
+
+.home-more {
+  margin: 1.75rem 0 3rem;
+  text-align: start;
 }
 
 .home-more a {
@@ -320,10 +364,6 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
   border-bottom: 1px solid var(--border);
 }
 
-.post-card:last-child {
-  border-bottom: 0;
-}
-
 .post-card > a {
   grid-column: 2;
   grid-row: 1;
@@ -334,7 +374,6 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
   line-height: 1.25;
   letter-spacing: -0.02em;
   text-decoration: none;
-  text-wrap: pretty;
   transition: color 150ms;
 }
 
@@ -355,7 +394,7 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
 }
 
 .post-card time {
-  font-size: 0.72rem;
+  font-size: 0.78rem;
 }
 
 .post-card-description {
@@ -363,6 +402,17 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
   margin: 0;
   color: var(--muted-foreground);
   line-height: 1.55;
+}
+
+/* The footer rule closes full lists; only the home list (followed by
+   "All posts") keeps a rule under its last card. */
+.post-card:last-child {
+  border-bottom: 0;
+}
+
+#featured .post-card:last-child,
+#recent-posts .post-card:last-child {
+  border-bottom: 1px solid var(--border);
 }
 
 @media (max-width: 639px) {
@@ -456,7 +506,6 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
   content: "/";
   margin: 0 0.65rem;
   color: var(--muted-foreground);
-  opacity: 0.6;
 }
 
 .post-kicker a {
@@ -488,7 +537,13 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
   text-wrap: pretty;
 }
 
-.post-meta {
+/* Dates and the meta row: mono, sentence case ("25 Oct 2026"). */
+.post-meta,
+.post-card time {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   color: var(--muted-foreground);
 }
 
@@ -500,7 +555,24 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
 .post-meta time,
 .post-meta span,
 .post-meta a {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+}
+
+/* "Edit page" link (shown in the meta row, or below the post on phones). */
+a[href^="https://github.com/soffits/soffits.github.io/edit/"] {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+}
+
+a[href^="https://github.com/soffits/soffits.github.io/edit/"]:hover {
+  color: var(--accent);
+}
+
+a[href^="https://github.com/soffits/soffits.github.io/edit/"] svg {
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
 #article {
@@ -582,13 +654,14 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
 
 /* Inline code */
 .app-prose :not(pre) > code {
-  padding: 0.1em 0.35em;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  background: var(--code-background);
-  font-size: 0.82em;
+  padding: 0.06em 0.22em;
+  border: 0;
+  border-radius: 3px;
+  background: var(--code-chip);
+  font-size: 0.86em;
   font-weight: 450;
-  overflow-wrap: break-word;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 /* Tables: scroll sideways on narrow screens instead of overflowing. */
@@ -609,36 +682,37 @@ nav[aria-label="breadcrumb"] span[aria-hidden="true"]::before {
 html[data-theme] .app-prose pre.astro-code {
   position: relative;
   margin: 1.75em 0;
-  padding: 1.1rem 1.25rem;
+  padding: 2.6rem 1.25rem 1.1rem;
   border: 1px solid var(--border);
   border-radius: 10px;
   outline-color: var(--accent);
   background-color: var(--code-background);
-  font-size: 0.84rem;
-  line-height: 1.7;
+  font-size: 0.9rem;
+  line-height: 1.65;
   scrollbar-width: thin;
 }
 
-html[data-theme]
-  .app-prose
-  pre.astro-code:not([data-language="plaintext"]):not([data-language="text"]) {
-  padding-top: 2.4rem;
+/* Language label on every block; plain text is labelled too. */
+.app-prose pre.astro-code::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 0.75rem;
+  left: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
 }
 
 .app-prose
-  pre.astro-code:not([data-language="plaintext"]):not(
-    [data-language="text"]
+  pre.astro-code:is(
+    [data-language="text"],
+    [data-language="plaintext"],
+    [data-language="txt"]
   )::before {
-  content: attr(data-language);
-  position: absolute;
-  top: 0.7rem;
-  left: 1.25rem;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted-foreground);
+  content: "plain text";
 }
 
 .copy-code {
@@ -674,19 +748,27 @@ html[data-theme]
 
 @media (max-width: 639px) {
   html[data-theme] .app-prose pre.astro-code {
-    font-size: 0.8rem;
+    font-size: 0.84rem;
     border-radius: 8px;
   }
 }
 
 /* ===== Post footer navigation ===== */
 
+/* Arrow sits beside the label; the title runs flush to the card padding,
+   so the older/newer cards mirror each other exactly. */
 .post-adjacent a {
-  padding: 1rem 1.1rem;
+  position: relative;
+  display: block;
+  padding: 1rem 1.15rem 1.1rem;
   border: 1px solid var(--border);
   border-radius: 10px;
   font-family: var(--font-display);
   transition: border-color 150ms;
+}
+
+.post-adjacent a[data-direction="next"] {
+  text-align: end;
 }
 
 .post-adjacent a:hover {
@@ -694,20 +776,46 @@ html[data-theme]
   opacity: 1;
 }
 
+.post-adjacent a > svg {
+  position: absolute;
+  top: 1.05rem;
+  width: 1rem;
+  height: 1rem;
+  color: var(--muted-foreground);
+}
+
+.post-adjacent a[data-direction="prev"] > svg {
+  inset-inline-start: 1.15rem;
+}
+
+.post-adjacent a[data-direction="next"] > svg {
+  inset-inline-end: 1.15rem;
+}
+
+.post-adjacent a[data-direction="prev"] > div > span {
+  padding-inline-start: 1.5rem;
+}
+
+.post-adjacent a[data-direction="next"] > div > span {
+  padding-inline-end: 1.5rem;
+}
+
 .post-adjacent a > div > span {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
+  font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted-foreground);
 }
 
 .post-adjacent a > div > div {
-  margin-top: 0.25rem;
+  margin-top: 0.4rem;
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.35;
   color: var(--foreground);
+  text-wrap: balance;
 }
 
 /* ===== Projects page ===== */
@@ -742,6 +850,7 @@ html[data-theme]
 }
 
 .project-card h2 {
+  white-space: nowrap;
   margin: 0 0 0.5rem;
   font-family: var(--font-mono);
   font-size: 1.05rem;
@@ -791,7 +900,7 @@ html[data-theme]
 /* ===== Footer ===== */
 
 footer {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--muted-foreground);
 }
 

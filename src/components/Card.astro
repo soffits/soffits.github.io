@@ -3,6 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import { getPostUrl } from "@/utils/getPostPaths";
 import { toTransitionName } from "@/utils/toTransitionName";
 import Datetime from "./Datetime.astro";
+import { keepTokensHtml } from "@/utils/keepTokens";
 
 type Props = {
   variant?: "h2" | "h3";
@@ -23,9 +24,10 @@ const { title, description, ...props } = data;
       "focus-visible:no-underline focus-visible:underline-offset-0",
     ]}
   >
-    <Heading transition:name={toTransitionName(id)}>
-      {title}
-    </Heading>
+    <Heading
+      transition:name={toTransitionName(id)}
+      set:html={keepTokensHtml(title)}
+    />
   </a>
   <Datetime {...props} />
   <p class="post-card-description">{description}</p>

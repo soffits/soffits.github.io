@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
-import IconRss from "@/assets/icons/IconRss.svg";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
@@ -56,14 +55,6 @@ const homePath = getRelativeLocaleUrl(locale, "");
         </a>
         <a class="btn" href={getRelativeLocaleUrl(locale, "projects")}>
           See projects
-        </a>
-        <a
-          class="btn btn-icon"
-          href={`${import.meta.env.BASE_URL.replace(/\/?$/, "/")}rss.xml`}
-          aria-label="RSS feed"
-          title="RSS feed"
-        >
-          <IconRss class="size-5 rtl:-rotate-90" />
         </a>
       </div>
       <aside class="hero-note" aria-label="Recently shipped">

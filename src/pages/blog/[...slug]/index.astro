@@ -16,6 +16,7 @@ import BackToTopButton from "./_components/BackToTopButton.astro";
 import AdjacentPostNav from "./_components/AdjacentPostNav.astro";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { useTranslations } from "@/i18n";
+import { keepTokensHtml } from "@/utils/keepTokens";
 import config from "@/config";
 
 export async function getStaticPaths() {
@@ -134,9 +135,8 @@ const ogImage = ogImageUrl
       <h1
         style={{ viewTransitionName: toTransitionName(post.id) }}
         class="post-title"
-      >
-        {title}
-      </h1>
+        set:html={keepTokensHtml(title)}
+      />
       <p class="post-dek">{description}</p>
 
       <div class="post-meta my-2 flex items-center gap-2">
@@ -148,7 +148,7 @@ const ogImage = ogImageUrl
             { hidden: !config.features.editPost?.enabled || hideEditPost },
           ]}
         >
-          |
+          &middot;
         </span>
         <EditPost {hideEditPost} {post} class="max-sm:hidden" />
       </div>

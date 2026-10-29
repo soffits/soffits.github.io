@@ -25,9 +25,10 @@
   --accent: #c43d16;
   --accent-foreground: #fffaf5;
   --muted: #ece8df;
-  --muted-foreground: #66625a;
-  --border: #dedad0;
+  --muted-foreground: #4f4b44;
+  --border: #d6d1c5;
   --code-background: #f1eee6;
+  --code-chip: #ebe7dd;
   --surface: #fdfcf9;
 }
 
@@ -38,8 +39,9 @@
   --accent: #ff7148;
   --accent-foreground: #1a0d07;
   --muted: #1f2124;
-  --muted-foreground: #9b968c;
-  --border: #2c2e33;
+  --muted-foreground: #b3aea3;
+  --border: #34363c;
   --code-background: #191a1d;
+  --code-chip: #24262a;
   --surface: #17181b;
 }
