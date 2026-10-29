@@ -60,6 +60,30 @@ hr,
   border-style: solid;
 }
 
+/* Interface chrome is not text-selectable; content (titles, prose, code)
+   stays selectable. One rule for every piece of chrome. */
+#skip-to-content,
+body > header,
+button,
+.btn,
+.tag-chip,
+.hero-eyebrow,
+.hero-note-label,
+#featured > h2,
+#recent-posts > h2,
+.home-more,
+.post-kicker,
+.post-meta,
+.post-card > div,
+.post-adjacent a > div > span,
+nav[aria-label="breadcrumb"],
+#back-button,
+#btt-btn-container,
+body > footer {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 ::selection {
   background: color-mix(in srgb, var(--accent) 22%, transparent);
   color: var(--foreground);
