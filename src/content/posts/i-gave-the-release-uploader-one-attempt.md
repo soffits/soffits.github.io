@@ -7,7 +7,7 @@ tags: ["github-actions", "minecraft"]
 
 In the [release workflow for Mekanism: Extra Modules](https://github.com/Lumysia/mekanism-extra-modules/blob/caaac8b975b814f285007facdff951ae3672561a/.github/workflows/release.yml), both the Modrinth and CurseForge upload steps set `retry-attempts: 1` while all the read steps before them are allowed to retry.
 
-Read calls—checking an existing version, listing project files, or downloading an artifact—can retry after a timeout without changing anything on the remote service. Uploads are different: Modrinth or CurseForge can accept and store the JAR, then drop the connection before the GitHub runner sees the response. If the uploader immediately retries the POST, it sends a duplicate write without checking whether the first one landed.
+Read calls (checking an existing version, listing project files, or downloading an artifact) can retry after a timeout without changing anything on the remote service. Uploads are different: Modrinth or CurseForge can accept and store the JAR, then drop the connection before the GitHub runner sees the response. If the uploader immediately retries the POST, it sends a duplicate write without checking whether the first one landed.
 
 Instead, recovery happens by rerunning the job and reading first:
 

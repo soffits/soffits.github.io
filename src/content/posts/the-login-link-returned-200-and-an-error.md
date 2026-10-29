@@ -30,7 +30,7 @@ That payload is from Germany for a PAX wardrobe. Both the thousands separator in
 
 Each market's login bundle usually points at `<cc>.accounts.ikea.com` and a public client ID. `ikea-cli` uses those for a browser copy-paste login flow so it never touches the user's password. My first check opened each market's authorize URL and verified that it returned HTTP 200.
 
-Saudi Arabia and Bahrain both pointed at `au.accounts.ikea.com` (the Australian tenant) and returned 200—right after redirecting to:
+Saudi Arabia and Bahrain both pointed at `au.accounts.ikea.com` (the Australian tenant) and returned 200, right after redirecting to:
 
 ```text
 https://au.accounts.ikea.com/en/identity/error-container/?client_id=...&error=unauthorized_client&error_description=Callback%20URL%20mismatch.
