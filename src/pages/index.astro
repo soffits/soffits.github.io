@@ -12,19 +12,21 @@ const getPostSlug = (id: string) => id.replace(/\.(md|mdx)$/, "");
 <BaseLayout>
   <section class="hero-grid">
     <div class="page-intro">
-      <p class="eyebrow">Developer notes by Sakina</p>
-      <h1>I build tools, break integrations, and write down what annoyed me.</h1>
+      <p class="eyebrow">Sakina</p>
+      <h1>I build command-line tools, browser extensions, and game mods.</h1>
       <p>
-        Recent notes include a proxy that counted the whole multipart request, a Minecraft NPC that tried the same vanished block again, and a self-heal script that could no longer edit its target.
+        This is where I keep my open-source projects and write down interesting bugs—like IKEA's Saudi login page redirecting to Australia with HTTP 200, or an OpenWrt router where Tailscale could ping peers while Linux had no routes.
       </p>
       <div class="action-row">
         <a class="button" href="/blog/">Read the blog</a>
         <a class="button subtle" href="/projects/">See projects</a>
       </div>
     </div>
-    <aside class="quiet-card" aria-label="Site mood">
-      <p class="cat-large" aria-hidden="true">=^._.^=</p>
-      <p>I trust a boring failure report more than a clean-looking “done,” and I like licenses that say what they mean.</p>
+    <aside class="side-card" aria-label="Current work">
+      <p class="eyebrow">Recently shipped</p>
+      <p>
+        51-country support in <a href="https://github.com/soffits/ikea-cli">ikea-cli</a>, streaming download caps in <a href="https://github.com/soffits/seafile-vault-cli">seafile-vault-cli</a>, and AI NPC experiments in <a href="https://github.com/soffits/OpenPlayer">OpenPlayer</a>.
+      </p>
     </aside>
   </section>
 

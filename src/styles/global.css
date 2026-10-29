@@ -1,7 +1,7 @@
 :root {
   color-scheme: dark light;
   --bg: #101018;
-  --bg-soft: #171723;
+  --bg-elevated: #171723;
   --panel: #1e1d2b;
   --panel-strong: #282638;
   --text: #f3edf7;
@@ -25,7 +25,7 @@
   :root {
     color-scheme: light;
     --bg: #f6eddf;
-    --bg-soft: #f0dfd4;
+    --bg-elevated: #f0dfd4;
     --panel: #fff8ed;
     --panel-strong: #f5e4d9;
     --text: #35272b;
@@ -119,11 +119,6 @@ a:hover {
   text-decoration: none;
 }
 
-.cat-mark {
-  color: var(--accent);
-  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
-}
-
 .site-nav {
   display: flex;
   flex-wrap: wrap;
@@ -142,7 +137,7 @@ a:hover {
 .site-nav a:hover,
 .site-nav a[aria-current="page"] {
   border-color: var(--line);
-  background: var(--bg-soft);
+  background: var(--bg-elevated);
   color: var(--text);
 }
 
@@ -193,7 +188,7 @@ h1 {
 }
 
 .page-intro p:not(.eyebrow),
-.quiet-card p,
+.side-card p:not(.eyebrow),
 .panel p {
   color: var(--muted);
 }
@@ -226,25 +221,18 @@ h1 {
   color: var(--accent-strong);
 }
 
-.quiet-card,
+.side-card,
 .panel {
   border: 1px solid var(--line);
   border-radius: 1.5rem;
   background: var(--card-bg);
 }
 
-.quiet-card {
+.side-card {
   display: grid;
   align-content: end;
   min-height: 22rem;
   padding: 1.25rem;
-}
-
-.cat-large {
-  margin: 0;
-  color: var(--accent);
-  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
-  font-size: clamp(2.4rem, 7vw, 4rem);
 }
 
 .panel-grid,
@@ -316,7 +304,7 @@ h1 {
   border: 1px solid var(--line);
   border-radius: 0.35rem;
   padding: 0.1rem 0.3rem;
-  background: var(--bg-soft);
+  background: var(--bg-elevated);
   color: var(--accent-strong);
 }
 
@@ -346,7 +334,7 @@ h1 {
     grid-template-columns: 1fr;
   }
 
-  .quiet-card {
+  .side-card {
     min-height: 14rem;
   }
 }

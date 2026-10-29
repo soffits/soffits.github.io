@@ -9,11 +9,11 @@ const posts = (await getCollection("posts")).sort(
 const getPostSlug = (id: string) => id.replace(/\.(md|mdx)$/, "");
 ---
 
-<BaseLayout title="Blog" description="Field notes, mistakes, and arguments from Sakina.">
+<BaseLayout title="Blog" description="Debugging notes and project write-ups by Sakina.">
   <section class="page-intro narrow">
     <p class="eyebrow">Blog</p>
-    <h1>Field notes, mistakes, and arguments I could not leave alone.</h1>
-    <p>Posts about tools, agent runtimes, maintenance scripts, self-hosted systems, and the exact log line or failed assumption that made the work worth writing down.</p>
+    <h1>Debugging notes and write-ups.</h1>
+    <p>What broke, how I tracked it down, and what changed in the code.</p>
   </section>
 
   <section class="post-list" aria-label="Blog posts">

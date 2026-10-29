@@ -1,43 +1,16 @@
 ---
-title: "The reminder only worked when cron was on time"
-description: "A payment reminder compared the clock to 09:00 with an equals sign. The scheduler started it a few minutes late for five weeks, and every run looked like a quiet day."
+title: "Small bugs I ran into recently"
+description: "A cron reminder that checked for the exact minute, a 133-byte Git LFS pointer that pickle read as opcode 118, an unsynced Komodo env var, and a busy Defender scan."
 pubDate: 2026-10-11
-tags: ["automation", "cron", "debugging"]
+tags: ["debugging", "python", "ops"]
 ---
 
-A small script sends reminders for recurring payments and renewals. Each entry has a start date, a repeat interval and a time of day, usually `09:00`. A cron job runs the script at 09:00, and the script prints the entries that are due. If it prints nothing, nothing gets sent.
+A few small things that tripped me up over the past couple of months, none of them big enough to deserve a grand postmortem:
 
-This was the check:
+**A reminder script that only worked at 09:00 sharp.** I have a small script that checks recurring payment dates and prints anything due at `09:00`. It used `if today < start or current_time != event["time"]: return False`, where `current_time` was `HH:MM`. On September 1–3 the job started during `09:00` and worked fine. From September 4 through October 10 (37 runs), the scheduler started a few minutes late—`09:07`, `09:11`, `09:16`—so the script printed nothing and logged `Status: silent (empty output)`, missing eight 9:00 reminders and one 15:00 reminder. It now checks `current_time < event["time"]` and records today's sent titles in a small JSON file so late runs still fire once.
 
-```python
-if today < start or current_time != event["time"]:
-    return False
-```
+**`KeyError: 118` from a 133-byte model file.** On a fresh clone of [`arxiv-topic-classifier`](https://github.com/Lumysia/arxiv-topic-classifier), `uv sync --locked` installed all 69 packages cleanly, and `uv run arxiv-classifier smoke` immediately died inside `joblib.load` with `KeyError: 118`. `models/arxiv_topic_pipeline.joblib` was only 133 bytes long: I had skipped `git lfs pull`, so pickle was trying to unserialize the text header `version https://git-lfs.github.com/spec/v1` and choking on the first byte (`v` is ASCII 118). Running `git lfs pull` fetched the real 36 MB file (`9dbb9ebe...`) and the smoke check passed; I still want to add a quick header check in `model.py` so it asks for `git lfs pull` instead of throwing a pickle opcode error.
 
-`current_time` was the wall clock formatted as `HH:MM`. So an entry was due only if the script happened to run during the minute 09:00.
+**Merging a secret rename without syncing Komodo.** Upgrading a self-hosted Remnawave panel from v2 to [v3.3.0](https://github.com/remnawave/panel/releases/tag/3.3.0) ([Yggdrasil PR #30](https://github.com/Lumysia/Yggdrasil/pull/30)) replaced `JWT_AUTH_SECRET` and `JWT_API_TOKENS_SECRET` with `APP_SECRET`. I updated both the Compose file and the Komodo TOML declaration, merged the PR, deployed, and watched the container loop on `JwtStrategy requires a secret or key`. Merging to Git updated the Compose file, but Komodo was still holding the old imported stack environment until I actually ran its [resource sync](https://komo.do/docs/automate/sync-resources).
 
-For the first few days of September it did. The runs on September 1, 2 and 3 started at 09:00:33, 09:00:59 and 09:00:34, and reminders went out on the 2nd and 3rd. From September 4 on, the scheduler started the job later: 09:07, 09:11, 09:16, a few times 09:31. I looked at all 37 runs from September 4 to October 10, and none started at 09:00. Every one of them logged the same status:
-
-```text
-Status: silent (empty output)
-```
-
-That status is what a day with nothing due looks like, and it is also what a broken comparison looks like. When I replayed the old logic over those dates, the script's own list said eight 9:00 reminders should have gone out, three of them on the same morning. None did. The 15:00 job used the same comparison and missed its one entry too; its recent runs started between 15:05 and 15:18.
-
-I find this one a little embarrassing because I had already written about [wanting quiet maintenance runs](/blog/silence-is-part-of-the-interface/). I still want that. But that wrapper was quiet when the expected state held, and it still kept its run history. A reminder that only speaks when something is due can't tell "nothing today" apart from "I missed it", so five weeks of silence looked like five weeks of nothing to do.
-
-I didn't find out why the scheduler started drifting after September 3. For a reminder it shouldn't matter, so I fixed the comparison instead of the timing. An entry is now due once its time has passed that day, and a small state file records which titles were already sent today:
-
-```python
-if today < start or current_time < event["time"]:
-    return False
-```
-
-```python
-sent = set(state.get(today.isoformat(), []))
-due = [e for e in EVENTS if is_due(e, today, current_time) and e["title"] not in sent]
-```
-
-The three separate jobs for 08:30, 09:00 and 15:00 became one job that runs at :00 and :30 during the 8, 9 and 15 o'clock hours. A late run still catches the item, and the next run doesn't repeat it. I added tests for those two cases and for an afternoon item that should wait until 15:00.
-
-Two gaps remain. If every run on a day fails, the entry is still lost, because the state only looks at today. The script also writes the state file before it prints, so if delivery breaks after that, the item is marked as sent without being sent. Both are less likely than a cron job starting a few minutes late, which had been happening every day for five weeks.
+**A winget failure caused by another Defender scan.** When I submitted [AionUi Community 2.1.60](https://github.com/microsoft/winget-pkgs/pull/422258) to `winget-pkgs`, both x64 and ARM64 installers finished cleanly and passed the static scan, but installation validation failed. Digging into the [validation logs](https://github.com/microsoft/winget-pkgs/pull/422258#issuecomment-5373077984) showed Microsoft Defender's signature update returning `0x80070652` and its full scan returning `0x8050111c` (another scan already in progress), plus the x64 runner launching the internal helper `aioncore.exe` directly without the data-directory argument the main app passes ([second log check](https://github.com/microsoft/winget-pkgs/pull/422258#issuecomment-5416912459)). A maintainer reran the validation job and the PR merged with the exact same installer hashes.

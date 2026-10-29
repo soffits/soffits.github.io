@@ -1,8 +1,8 @@
 # Sakina's Personal Blog
 
-This repository powers <https://soffits.github.io/>, Sakina's GitHub Pages personal blog.
+This repository builds <https://soffits.github.io/>, Sakina's personal blog.
 
-It is a small Astro static site for soft notes, project pages, maintainer writing, and reflective posts. Content is written in Markdown/MDX and deployed to GitHub Pages with GitHub Actions.
+It is an Astro static site for debugging write-ups and open-source project pages. Content is written in Markdown/MDX and deployed to GitHub Pages with GitHub Actions.
 
 ## Development
 
