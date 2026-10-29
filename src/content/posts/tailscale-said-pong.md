@@ -1,15 +1,13 @@
 ---
-title: "Tailscale said pong. SSH still had nowhere to go"
-description: "The daemon could reach its peers, but tailscale0 had no address and Linux table 52 was empty."
+title: "Why tailscale ping worked on OpenWrt when SSH and ICMP didn't"
+description: "tailscaled could reach its peers, but netifd and a LuCI interface config were wiping the IP and table 52 routes off tailscale0."
 pubDate: 2026-08-02
-tags: ["networking", "openwrt", "maintenance"]
+tags: ["networking", "openwrt"]
 ---
 
-`tailscale ping` returned `pong`. Plain `ping` dropped every packet. SSH and LuCI over the Tailnet were gone too.
+On an OpenWrt router, `tailscale ping` returned `pong` while plain `ping` dropped every packet and SSH and LuCI over the Tailnet timed out. Because `tailscale ping` succeeded, I spent the first few minutes checking ACLs and firewall rules before looking at the network interface itself.
 
-That combination sent me toward ACLs and firewall rules first. The peers could apparently reach each other, so surely the tunnel was alive and something higher up was rejecting traffic. It was a plausible story, and it was wrong.
-
-Three commands made the failure much less mysterious:
+Three commands showed what was actually missing:
 
 ```sh
 tailscale ip -4
@@ -17,24 +15,18 @@ ip address show dev tailscale0
 ip route show table 52
 ```
 
-The first still printed the address assigned to the router by Tailscale's control plane. The second showed no Tailscale IPv4 `/32` or IPv6 `/128` on `tailscale0`. The third printed nothing at all. Linux had neither the address nor the peer routes needed to carry ordinary IP traffic.
+`tailscale ip -4` printed the router's assigned Tailscale address, `ip address show dev tailscale0` showed no IPv4 `/32` or IPv6 `/128` on the interface, and `ip route show table 52` was completely empty. Default `tailscale ping` probes peers at the [Tailscale layer without injecting packets into either host's TUN device](https://github.com/tailscale/tailscale/blob/main/cmd/tailscale/cli/ping.go) (unlike `--icmp`), so it kept working even while Linux had no address or routes on `tailscale0` to carry normal IP traffic.
 
-I initially described the successful probe as TSMP. That was imprecise: plain `tailscale ping` uses Tailscale's own default ping mode, while `--tsmp` and `--icmp` are separate choices. The [CLI documentation](https://tailscale.com/docs/reference/tailscale-cli) and [ping-type reference](https://tailscale.com/docs/reference/ping-types) spell out the useful distinction: these probes can test Tailscale at different layers, and the default command does not exercise the hosts' normal IP stacks. The [command's help text and implementation](https://github.com/tailscale/tailscale/blob/main/cmd/tailscale/cli/ping.go) are blunter: it pings at the Tailscale layer and does not inject packets into either TUN device.
-
-So the pong was real. It just answered a narrower question than the one I cared about.
-
-The missing kernel state led back to a LuCI-generated network section:
+The missing kernel state traced back to a LuCI-generated network section:
 
 ```text
 network.tailscale.proto='none'
 network.tailscale.device='tailscale0'
 ```
 
-The community LuCI app's [Auto Configure Firewall action](https://github.com/Tokisaki-Galaxy/luci-app-tailscale-community/blob/4dd90ef/luci-app-tailscale-community/root/usr/share/rpcd/ucode/tailscale.uc#L232-L353) creates exactly that interface, then reloads the network and firewall when it changes the configuration. This is not obviously bad configuration. In fact, the current [OpenWrt Tailscale guide](https://openwrt.org/docs/guide-user/services/vpn/tailscale/start) also recommends an unmanaged interface named `tailscale` on device `tailscale0`.
+The community LuCI app's [Auto Configure Firewall action](https://github.com/Tokisaki-Galaxy/luci-app-tailscale-community/blob/4dd90ef/luci-app-tailscale-community/root/usr/share/rpcd/ucode/tailscale.uc#L232-L353) creates that interface and reloads the network and firewall, matching the unmanaged `tailscale` interface pattern in the [OpenWrt Tailscale guide](https://openwrt.org/docs/guide-user/services/vpn/tailscale/start). On this router, though, the logs showed `tailscaled` and `netifd` stepping on each other: `tailscaled` created `tailscale0`, `netifd` noticed the device and brought the logical `tailscale` interface up, and the resulting reload wiped out the address and table 52 routes (similar to [this GL.iNet startup-loop thread](https://forum.gl-inet.com/t/tailscale-startup-loop/66076)).
 
-On this router, however, the logs showed two components trying to look after the same device. `tailscaled` created `tailscale0`; netifd noticed it, brought the logical `tailscale` interface up, and triggered network and firewall work. The address and table 52 routes then disappeared. A [closely matching public startup-loop report](https://forum.gl-inet.com/t/tailscale-startup-loop/66076) shows the same uncomfortable sequence—`tailscaled`, netifd, a firewall reload, then the device and Tailscale rules going down—although it does not prove the same root cause.
-
-I kept the logical interface in UCI but stopped netifd from activating it automatically:
+Keeping the UCI section but telling `netifd` not to bring it up automatically stopped the fight:
 
 ```sh
 uci set network.tailscale.auto='0'
@@ -43,8 +35,4 @@ ifdown tailscale
 /etc/init.d/tailscale restart
 ```
 
-For firewall4, I attached the zone directly to the real `tailscale0` device instead of relying on the inactive logical network. This router only needed remote access to the router itself, so the zone was deliberately boring: input `ACCEPT`, output `ACCEPT`, forward `REJECT`, with no masquerading, MSS clamping, or cross-zone forwarding. A subnet router or exit node would need a different policy; copying this one there would break the feature it is meant to provide.
-
-After the change, `tailscale0` regained its IPv4 `/32` and IPv6 `/128`. Table 52 filled with peer routes again. Ordinary ping, SSH, and LuCI all worked, and another Tailscale service restart produced the same healthy state instead of erasing it.
-
-I still do not know why this OpenWrt build, netifd, and plugin combination turned a documented unmanaged-interface pattern into a fight over `tailscale0`. That is why I am not turning the fix into advice to delete every LuCI interface for Tailscale. The narrower result is repeatable: on this router, disabling automatic activation ended the second ownership path, and the address and routes stayed where `tailscaled` put them.
+In `firewall4`, I attached the zone directly to the `tailscale0` device rather than the inactive logical network (`input ACCEPT`, `output ACCEPT`, `forward REJECT`, since this router is only accessed directly and does not act as a subnet router or exit node). After restarting Tailscale, `tailscale0` kept its `/32` and `/128` addresses, table 52 stayed populated, and normal `ping`, SSH, and LuCI came back across restarts.

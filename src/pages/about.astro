@@ -2,21 +2,21 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="About" description="About Sakina, a developer who writes about tools, maintenance, and systems that fail in specific ways.">
+<BaseLayout title="About" description="About Sakina, a software engineer building CLI tools, browser extensions, and Minecraft mods.">
   <section class="page-intro narrow">
     <p class="eyebrow">About</p>
-    <h1>I am Sakina. I make developer tools and write about what broke while I was building them.</h1>
+    <h1>Hi, I'm Sakina.</h1>
     <p>
-      Most posts start with a concrete annoyance: an upload that still hit a proxy limit, a repair script that could not repair itself, or an NPC that broke a log and then tried the same coordinates again.
+      I'm a programmer who likes building fast, practical command-line tools, browser extensions, and Minecraft mods.
     </p>
   </section>
 
   <section class="prose narrow">
     <p>
-      Much of this site exists because a clean-looking success message hid something important. I keep the log line, failed assumption, or awkward test that made me change the code.
+      Most of my open-source repositories start because I got tired of clicking through a slow web UI or maintaining a brittle one-off script. Lately that has meant <a href="https://github.com/soffits/ikea-cli">ikea-cli</a>, <a href="https://github.com/soffits/bookfetch-cli">bookfetch-cli</a>, <a href="https://github.com/soffits/seafile-vault-cli">seafile-vault-cli</a>, <a href="https://github.com/soffits/canvas-student-cli">canvas-student-cli</a>, <a href="https://github.com/soffits/jobloom">jobloom</a>, and <a href="https://github.com/soffits/OpenPlayer">OpenPlayer</a>.
     </p>
     <p>
-      The public projects are usually AGPL. The posts are not release announcements; they are the parts that would otherwise disappear between a failed run and the fixing commit.
+      When a bug takes an unexpected turn (an Auth0 error page returning HTTP 200, a hover button sliding out from under the cursor, or `tailscale0` losing its routing table on OpenWrt), I write up the diagnosis and the fix here so I have it next time (and in case someone else searches the same error line).
     </p>
   </section>
 </BaseLayout>
