@@ -1,6 +1,6 @@
 {
   "name": "Sakina Blog",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-24-bookworm",
   "customizations": {
     "vscode": {
       "extensions": ["astro-build.astro-vscode"]

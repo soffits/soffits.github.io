@@ -1,52 +1,129 @@
 ---
 import { getCollection } from "astro:content";
-import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Card from "@/components/Card.astro";
+import LinkButton from "@/components/LinkButton.astro";
+import { getSortedPosts } from "@/utils/getSortedPosts";
+import { useTranslations } from "@/i18n";
+import { BLOG_ROUTE } from "@/content.config";
+import config from "@/config";
 
-const posts = (await getCollection("posts"))
-  .sort((left, right) => right.data.pubDate.valueOf() - left.data.pubDate.valueOf())
-  .slice(0, 3);
+const { posts: postsConfig } = config;
 
-const getPostSlug = (id: string) => id.replace(/\.(md|mdx)$/, "");
+const locale = Astro.currentLocale ?? config.site.lang;
+const t = useTranslations(locale);
+
+const posts = await getCollection("posts");
+const sortedPosts = getSortedPosts(posts);
+const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
+const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+const homePath = getRelativeLocaleUrl(locale, "");
 ---
 
-<BaseLayout>
-  <section class="hero-grid">
-    <div class="page-intro">
-      <p class="eyebrow">Sakina</p>
-      <h1>I build command-line tools, browser extensions, and game mods.</h1>
-      <p>
-        This is where I keep my open-source projects and write down interesting bugs, like IKEA's Saudi login page redirecting to Australia with HTTP 200, or an OpenWrt router where Tailscale could ping peers while Linux had no routes.
+<Layout>
+  <Header />
+  <main
+    id="main-content"
+    data-layout="index"
+    data-home-path={homePath}
+    class="app-layout my-1"
+  >
+    <!-- Sakina: home hero (styled in src/styles/sakina.css) -->
+    <section id="hero" class="hero">
+      <p class="hero-eyebrow">Sakina &middot; software engineer</p>
+      <h1 class="hero-title">
+        I build <span class="whitespace-nowrap">command-line</span> tools, browser
+        extensions, and game mods<span class="hero-dot">.</span>
+      </h1>
+      <p class="hero-lede">
+        This is where I keep my open-source projects and write down interesting
+        bugs, like IKEA's Saudi login page redirecting to Australia with HTTP
+        200, or an OpenWrt router where Tailscale could ping peers while Linux
+        had no routes.
       </p>
-      <div class="action-row">
-        <a class="button" href="/blog/">Read the blog</a>
-        <a class="button subtle" href="/projects/">See projects</a>
+      <div class="hero-actions">
+        <a
+          class="btn btn-primary"
+          href={getRelativeLocaleUrl(locale, BLOG_ROUTE)}
+        >
+          Read the blog
+          <IconArrowRight class="inline-block size-5 rtl:-rotate-180" />
+        </a>
+        <a class="btn" href={getRelativeLocaleUrl(locale, "projects")}>
+          See projects
+        </a>
       </div>
-    </div>
-    <aside class="side-card" aria-label="Current work">
-      <p class="eyebrow">Recently shipped</p>
-      <p>
-        51-country support in <a href="https://github.com/soffits/ikea-cli">ikea-cli</a>, streaming download caps in <a href="https://github.com/soffits/seafile-vault-cli">seafile-vault-cli</a>, and AI NPC experiments in <a href="https://github.com/soffits/OpenPlayer">OpenPlayer</a>.
-      </p>
-    </aside>
-  </section>
+      <aside class="hero-note" aria-label="Recently shipped">
+        <p class="hero-note-label">Recently shipped</p>
+        <p>
+          51-country support in{" "}
+          <a href="https://github.com/soffits/ikea-cli">ikea-cli</a>, streaming
+          download caps in{" "}
+          <a href="https://github.com/soffits/seafile-vault-cli">
+            seafile-vault-cli
+          </a>, and AI NPC experiments in{" "}
+          <a href="https://github.com/soffits/OpenPlayer">OpenPlayer</a>.
+        </p>
+      </aside>
+    </section>
 
-  <section aria-labelledby="recent-posts-heading">
-    <p class="eyebrow">Recently</p>
-    <h2 id="recent-posts-heading">Latest posts</h2>
-    <div class="panel-grid">
-      {
-        posts.map((post) => (
-          <article class="panel post-card">
-            <p class="post-date">
-              <time datetime={post.data.pubDate.toISOString()}>
-                {new Intl.DateTimeFormat("en", { dateStyle: "medium", timeZone: "UTC" }).format(post.data.pubDate)}
-              </time>
-            </p>
-            <h3><a href={`/blog/${getPostSlug(post.id)}/`}>{post.data.title}</a></h3>
-            <p>{post.data.description}</p>
-          </article>
-        ))
-      }
+    {
+      featuredPosts.length > 0 && (
+        <section
+          id="featured"
+          class:list={[
+            "pt-12 pb-6",
+            { "border-border border-b": recentPosts.length > 0 },
+          ]}
+        >
+          <h2 class="text-2xl font-semibold tracking-wide">
+            {t.home.featured}
+          </h2>
+          <ul>
+            {featuredPosts.map(data => (
+              <Card variant="h3" {...data} />
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      recentPosts.length > 0 && (
+        <section id="recent-posts" class="pt-12 pb-6">
+          <h2 class="text-2xl font-semibold tracking-wide">
+            {t.home.recentPosts}
+          </h2>
+          <ul>
+            {recentPosts.slice(0, postsConfig.perIndex).map(data => (
+              <Card variant="h3" {...data} />
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <div class="home-more my-8 text-center">
+      <LinkButton href={getRelativeLocaleUrl(locale, BLOG_ROUTE)}>
+        {t.home.allPosts}
+        <IconArrowRight class="inline-block rtl:-rotate-180" />
+      </LinkButton>
     </div>
-  </section>
-</BaseLayout>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const indexLayout = (document.querySelector("#main-content") as HTMLElement)
+      ?.dataset;
+    const baseRoot = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+    if (indexLayout?.layout) {
+      sessionStorage.setItem("backUrl", indexLayout.homePath ?? baseRoot);
+    }
+  });
+</script>

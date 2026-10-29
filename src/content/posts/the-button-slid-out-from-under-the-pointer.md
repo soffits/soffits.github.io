@@ -1,7 +1,7 @@
 ---
 title: "A hover button that slid out from under the cursor"
 description: "An 8px gap on a slide-out dock button meant a pointer resting 6px from the viewport edge lost :hover as soon as the button moved."
-pubDate: 2026-10-18
+pubDatetime: 2026-10-18
 tags: ["css", "browser-extensions"]
 ---
 

@@ -4,3 +4,5 @@ node_modules/
 .env
 .env.*
 !.env.example
+# Pagefind index copied into public/ by `npm run build` for `npm run dev`
+public/pagefind

@@ -1,0 +1,47 @@
+/* Register design tokens for Tailwind v4 */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  /* Sakina: body face; display and code faces are applied in sakina.css */
+  --font-app: var(--font-body);
+}
+
+/*
+ * Sakina: "ink and vermilion" palette.
+ * Warm paper / near-black ink, with one vermilion accent kept for
+ * interaction and emphasis only.
+ */
+
+/* Light theme values */
+:root,
+[data-theme="light"] {
+  --background: #f8f6f1;
+  --foreground: #1a1916;
+  --accent: #c43d16;
+  --accent-foreground: #fffaf5;
+  --muted: #ece8df;
+  --muted-foreground: #4f4b44;
+  --border: #d6d1c5;
+  --code-background: #f1eee6;
+  --code-chip: #ebe7dd;
+  --surface: #fdfcf9;
+}
+
+/* Dark theme values */
+[data-theme="dark"] {
+  --background: #121315;
+  --foreground: #e8e5de;
+  --accent: #ff7148;
+  --accent-foreground: #1a0d07;
+  --muted: #1f2124;
+  --muted-foreground: #b3aea3;
+  --border: #34363c;
+  --code-background: #191a1d;
+  --code-chip: #24262a;
+  --surface: #17181b;
+}

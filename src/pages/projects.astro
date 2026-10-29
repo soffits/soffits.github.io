@@ -1,23 +1,49 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import { PROJECTS } from "@/config/site";
+// Sakina: projects page (not part of upstream AstroPaper).
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import { GITHUB_PROFILE, PROJECTS } from "@/site";
+import config from "@/config";
 ---
 
-<BaseLayout title="Projects" description="Open-source CLI tools and projects by Sakina.">
-  <section class="page-intro narrow">
-    <p class="eyebrow">Projects</p>
-    <h1>Open-source tools I build and maintain.</h1>
-    <p>Command-line utilities, libraries, and game mods on <a href="https://github.com/soffits">GitHub</a>.</p>
-  </section>
+<Layout
+  title={`Projects | ${config.site.title}`}
+  description="Open-source CLI tools and projects by Sakina."
+>
+  <Header />
 
-  <section class="project-list" aria-label="Project list">
-    {
-      PROJECTS.map((project) => (
-        <article class="panel project-card">
-          <h2><a href={project.href}>{project.name}</a></h2>
-          <p>{project.description}</p>
-        </article>
-      ))
-    }
-  </section>
-</BaseLayout>
+  <Breadcrumb />
+
+  <Main
+    pageTitle="Open-source tools I build and maintain."
+    pageDesc="Command-line utilities, libraries, and game mods on GitHub."
+  >
+    <ul class="project-list">
+      {
+        PROJECTS.map(project => (
+          <li class="project-card">
+            <h2>
+              <a href={project.href}>
+                {project.name}
+                <IconArrowRight
+                  aria-hidden="true"
+                  class="project-card-arrow inline-block size-5 rtl:-rotate-180"
+                />
+              </a>
+            </h2>
+            <p>{project.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="project-more">
+      <a href={GITHUB_PROFILE}>All repositories on GitHub</a>
+    </p>
+  </Main>
+
+  <Footer />
+</Layout>
