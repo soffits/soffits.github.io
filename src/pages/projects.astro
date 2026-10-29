@@ -1,12 +1,16 @@
 ---
-// Sakina: projects page (not part of upstream AstroPaper).
+// Sakina: projects page (not part of upstream AstroPaper). The list comes from
+// GitHub at build time; the deploy workflow also rebuilds daily.
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import Main from "@/components/Main.astro";
 import Footer from "@/components/Footer.astro";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
-import { GITHUB_PROFILE, PROJECTS } from "@/site";
+import { GITHUB_PROFILE } from "@/site";
+import { getRepos } from "@/lib/repos";
+
+const projects = await getRepos();
 import config from "@/config";
 ---
 
@@ -19,12 +23,12 @@ import config from "@/config";
   <Breadcrumb />
 
   <Main
-    pageTitle="Open-source tools I build and maintain."
-    pageDesc="Command-line utilities, libraries, and game mods on GitHub."
+    pageTitle="Projects"
+    pageDesc="My public repositories on GitHub, most recently updated first."
   >
     <ul class="project-list">
       {
-        PROJECTS.map(project => (
+        projects.map(project => (
           <li class="project-card">
             <h2>
               <a href={project.href}>
@@ -36,6 +40,7 @@ import config from "@/config";
               </a>
             </h2>
             <p>{project.description}</p>
+            {project.language && <p class="project-meta">{project.language}</p>}
           </li>
         ))
       }
