@@ -25,7 +25,7 @@
   - `astro.config.ts`: fonts (Space Grotesk / Source Serif 4 / JetBrains Mono via the Astro Fonts API), Shiki themes, `trailingSlash: "always"`, and `redirects` from `src/redirects.ts`.
   - `src/styles/theme.css`: colour tokens for light and dark.
   - `src/styles/sakina.css`: every visual override of the stock theme, in one unlayered stylesheet.
-  - `src/site.ts`: projects list and repository links. `src/i18n/lang/en.ts`: UI wording.
+  - `src/site.ts`: repository links. `src/lib/repos.ts`: the projects page list, fetched from the GitHub API at build time (forks, archived repos and this repo are skipped); the deploy workflow runs daily to refresh it. `src/i18n/lang/en.ts`: UI wording.
   - `src/utils/renderOgImage.ts`: shared social image layout.
   - Small hook classes and edits inside upstream components are marked with `Sakina:` comments. Search for `Sakina:` to list every divergence.
 - Local divergences from upstream structure: `src/pages/posts/` is renamed to `src/pages/blog/` (route constant `BLOG_ROUTE` in `src/content.config.ts`), `src/pages/projects.astro` is added, sample posts, images, Docker and pnpm files are removed, and npm is used instead of pnpm.
