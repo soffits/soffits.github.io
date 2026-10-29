@@ -1,7 +1,7 @@
 ---
 title: "Small bugs I ran into recently"
 description: "A cron reminder that checked for the exact minute, a 133-byte Git LFS pointer that pickle read as opcode 118, an unsynced Komodo env var, and a busy Defender scan."
-pubDate: 2026-10-11
+pubDatetime: 2026-10-11
 tags: ["debugging", "python", "ops"]
 ---
 

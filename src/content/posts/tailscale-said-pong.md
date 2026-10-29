@@ -1,7 +1,7 @@
 ---
 title: "Why tailscale ping worked on OpenWrt when SSH and ICMP didn't"
 description: "tailscaled could reach its peers, but netifd and a LuCI interface config were wiping the IP and table 52 routes off tailscale0."
-pubDate: 2026-08-02
+pubDatetime: 2026-08-02
 tags: ["networking", "openwrt"]
 ---
 

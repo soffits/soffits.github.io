@@ -1,7 +1,7 @@
 ---
 title: "Taking ikea-cli from Canada to 51 countries"
 description: "Generating per-country configs from www.ikea.com turned up German prices with two dots, Saudi login links that redirected to an Auth0 error page with HTTP 200, and 21 markets on a newer session system."
-pubDate: 2026-10-25
+pubDatetime: 2026-10-25
 tags: ["python", "open-source"]
 ---
 

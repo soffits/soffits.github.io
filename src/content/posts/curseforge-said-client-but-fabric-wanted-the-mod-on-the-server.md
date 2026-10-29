@@ -1,7 +1,7 @@
 ---
 title: "When AUTO_CURSEFORGE drops a required server mod"
 description: "CurseForge tagged Simply Tooltips as client-only, so itzg/minecraft-server stripped it from a Prominence II server even though two other mods depended on it."
-pubDate: 2026-09-20
+pubDatetime: 2026-09-20
 tags: ["minecraft", "docker"]
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Three transfer bugs in seafile-vault-cli"
 description: "Streaming to disk still hit a 1 MiB in-memory read cap, streaming uploads hit a 100 MB proxy limit, and a 2xx upload crashed on non-JSON output."
-pubDate: 2026-08-16
+pubDatetime: 2026-08-16
 tags: ["python", "open-source"]
 ---
 

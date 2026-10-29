@@ -1,7 +1,7 @@
 ---
 title: "OpenPlayer broke the spruce log and tried to mine the air"
 description: "In an OpenPlayer furnace test, the NPC mined a spruce log, left the item on the ground, and kept digging the empty coordinates."
-pubDate: 2026-05-10
+pubDatetime: 2026-05-10
 tags: ["minecraft", "open-source"]
 ---
 

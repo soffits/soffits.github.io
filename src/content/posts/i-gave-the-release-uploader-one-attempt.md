@@ -1,7 +1,7 @@
 ---
 title: "Idempotent Modrinth and CurseForge uploads in GitHub Actions"
 description: "Checking remote hashes before uploading a release JAR instead of letting the upload step blindly retry after a timeout."
-pubDate: 2026-09-13
+pubDatetime: 2026-09-13
 tags: ["github-actions", "minecraft"]
 ---
 
