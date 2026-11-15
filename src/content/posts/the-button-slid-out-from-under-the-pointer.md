@@ -1,11 +1,12 @@
 ---
-title: "A hover button that slid out from under the cursor"
+title: "The button kept running away from the cursor"
 description: "An 8px gap on a slide-out dock button meant a pointer resting 6px from the viewport edge lost :hover as soon as the button moved."
 pubDatetime: 2026-10-18
+modDatetime: 2026-11-15
 tags: ["css", "browser-extensions"]
 ---
 
-In `OpenBrowserAgent`, the page-translate button sits half-tucked into the right edge of the viewport and slides out on `:hover`:
+I help work on `OpenBrowserAgent`, a browser extension that, among other things, puts a small page-translate button on every page. The button sits half-tucked into the right edge of the viewport and slides out when you hover it:
 
 ```css
 .page-button-dock[data-edge="right"] {
@@ -17,11 +18,17 @@ In `OpenBrowserAgent`, the page-translate button sits half-tucked into the right
 }
 ```
 
-Tucked in, the visible half of the 36px button covers the strip from `0px` to `18px` from the right edge. When hovered, it slides onto the page plus an `8px` gap (`--page-button-gap`), so it now occupies `8px` to `44px`.
+There's a browser test for it. It points the cursor `6px` from the right edge, waits for the button to slide out, and clicks. It had been passing. Then, on the `0.2.0-beta.12` release commit, it started timing out, 3 runs out of 5 on my machine.
 
-Our browser test pointed `6px` from the right edge, waited for the button to slide out, and clicked. On the `0.2.0-beta.12` release commit it started timing out, failing 3 times out of 5 locally. That's the worst kind of flaky: often enough to block a release, rare enough that you wonder if it's your machine. At `6px` from the edge, the pointer hovers the tucked button, the button slides over to `8px–44px`, `:hover` immediately drops because the button is no longer under the cursor, the button slides back, and the next pointer event starts the cycle all over again. (In headless Chromium, `:hover` is only re-evaluated when a pointer event fires, so a stationary synthetic cursor stayed put while a real hand or repeated mouse events made the button bounce between `756px` and `769px`.)
+That's the worst kind of flaky. It fails often enough to block a release and passes often enough that the timeout, the headless browser and your own machine all look like better suspects than the code. What found it in the end was plain arithmetic about where the button actually is.
 
-The fix bridges that `8px` gap with an invisible `::after` pseudo-element on the dock:
+Tucked in, the visible half of the 36px button covers the strip from `0px` to `18px` from the right edge. Hovered, it slides onto the page plus an `8px` gap (`--page-button-gap`), so it now covers `8px` to `44px`.
+
+The test's cursor is at `6px`. It hovers the tucked button, the button slides out to `8px–44px`, and now nothing is under the cursor, so `:hover` drops. The button slides back under the cursor, the next pointer event hovers it again, and round it goes. The button was running away from the pointer that was trying to click it. Once I wrote the two ranges next to each other it was almost funny.
+
+It also explains why it only failed sometimes. In headless Chromium, `:hover` is only re-evaluated when a pointer event fires, so a synthetic cursor that sat still left the button where it was. A real hand, or a run with a few more mouse events, made it bounce between `756px` and `769px`.
+
+The fix is to bridge that `8px` gap with an invisible `::after` on the dock:
 
 ```css
 .page-button-dock::after {
@@ -36,4 +43,6 @@ The fix bridges that `8px` gap with an invisible `::after` pseudo-element on the
 }
 ```
 
-Because `::after` counts as part of the element for hit testing, a cursor in the `0px–8px` gap keeps `:hover` active while the button is out, and sits off-screen past the viewport edge when the button is tucked. The same PR also fixed a separate test race where a tab helper ran in `about:blank` before the target page loaded, and the browser suite passed 13 runs in a row locally.
+`::after` counts as part of the element for hit testing, so a cursor in the `0px–8px` gap keeps `:hover` active while the button is out. When the button is tucked, that strip sits off-screen past the viewport edge and doesn't get in the way of anything. The same PR fixed a separate race where a tab helper ran in `about:blank` before the target page had loaded, and after both the browser suite passed 13 runs in a row locally.
+
+What I keep from this one is small. The test wasn't flaky, it was right about a bug a real person would hit: park your mouse near the edge of the screen and the button jitters instead of letting you click it. When a hover test fails "sometimes", I now write down the hit areas before I touch the timeouts.
