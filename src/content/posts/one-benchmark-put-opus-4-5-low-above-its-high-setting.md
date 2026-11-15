@@ -5,7 +5,7 @@ pubDatetime: 2026-11-01
 tags: ["ai-benchmarks", "statistics", "open-source"]
 ---
 
-[ECI Live](https://soffits.github.io/eci-live/) refits Epoch AI's [Capabilities Index](https://epoch.ai/eci) every day from Epoch's open benchmark data, using Epoch's own [`eci-public`](https://github.com/epoch-research/eci-public) code in a public GitHub Actions run. The first version scored models the way Epoch does: one number per model, with every reasoning setting pooled together. Then I split it, so `GPT-6 Astra (max)` and `GPT-6 Astra (medium)` each get their own score.
+Epoch's [`eci-public`](https://github.com/epoch-research/eci-public) code barely changes, but Epoch rebuilds its benchmark data every day, and I wanted an index that kept up with that. So [ECI Live](https://soffits.github.io/eci-live/) refits Epoch AI's [Capabilities Index](https://epoch.ai/eci) every day from Epoch's open benchmark data, using that same code in a public GitHub Actions run. The first version scored models the way Epoch does: one number per model, with every reasoning setting pooled together. Then I split it, so `GPT-6 Astra (max)` and `GPT-6 Astra (medium)` each get their own score.
 
 The way I did that is Epoch's own method for its domain scores. The model-level fit gives every benchmark a difficulty and a slope, and the predicted score is a logistic curve of the gap between them:
 
@@ -25,11 +25,11 @@ The low-effort row has exactly one result in the index: DeepResearch Bench, scor
 159.869 + logit(0.537) / 0.01407 = 170.41
 ```
 
-That is the published number to two decimals. Nothing went wrong in the solver.
+That's the published number to two decimals, so the solver was doing exactly what I asked it to.
 
 The problem is the slope. For comparison, GPQA diamond's slope is 0.132, almost ten times steeper. On DeepResearch Bench, one extra percentage point of score moves the capability estimate by about 2.9 ECI; on GPQA diamond, the same point is worth about 0.3. A nearly flat benchmark separates models weakly, so when it's all a row has, a small score difference gets inflated into a large capability gap. The bootstrap interval says so: 158.6 to 211.9. Its upper end is more than 40 points above the best ranked model.
 
-`Claude Opus 4.5 (high)` now has 12 benchmarks and an interval of 151.8 to 155.5. Low effort did not beat high effort. One row had enough evidence to be measured and the other didn't.
+`Claude Opus 4.5 (high)` now has 12 benchmarks and an interval of 151.8 to 155.5. So no, low effort didn't beat high effort. One of them had twelve benchmarks behind it and the other had one.
 
 This wasn't a rare case. In the current snapshot, 302 of the 816 variants rest on one or two benchmarks.
 

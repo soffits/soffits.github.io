@@ -6,7 +6,7 @@ modDatetime: 2026-11-14
 tags: ["go", "graphql", "open-source"]
 ---
 
-The Instacart CLI in [printing-press-library](https://github.com/mvanhorn/printing-press-library/tree/main/library/commerce/instacart) can look up a store, add products and show your cart. Until this week, `cart show` only gave you names and quantities. On the website, the same cart had a note under Tomato on the Vine: "This item is not available in your area." The CLI never showed that, so a dead item could sit in the cart until someone happened to open the web page.
+The Instacart CLI in [printing-press-library](https://github.com/mvanhorn/printing-press-library/tree/main/library/commerce/instacart) can look up a store, add products and show your cart, and I'd been using it to put grocery orders together. Until this week, `cart show` only gave you names and quantities. On the website, the same cart had a note under Tomato on the Vine: "This item is not available in your area." The CLI never showed that, so a dead item could sit in the cart until someone happened to open the web page.
 
 My fix is merged as [#2432](https://github.com/mvanhorn/printing-press-library/pull/2432). It also adds a host option so you can point the CLI at instacart.ca, but that part is just plumbing. The interesting part was what Instacart's responses actually say.
 
@@ -28,7 +28,7 @@ My fix is merged as [#2432](https://github.com/mvanhorn/printing-press-library/p
 }
 ```
 
-`stockLevel` looks like the field to use, since it has the most detail (`highlyInStock`, `inStock`, `lowStock`, `outOfStock`). Here it says `inStock`. The boolean says the opposite, and so do the label shoppers see and the "Show similar" button. If the CLI went by `stockLevel`, it would tell you the pasta is in stock.
+`stockLevel` looks like the field to use, since it has the most detail (`highlyInStock`, `inStock`, `lowStock`, `outOfStock`). Here it says `inStock`. The boolean says the opposite, and so do the label shoppers see and the "Show similar" button. Three answers to one question, in one object. If the CLI went by `stockLevel`, it would tell you the pasta is in stock.
 
 So `available` decides. `stockLevel` only comes in after that, to tell "low stock" from "in stock", and Instacart's own label goes next to it when it adds something. That mattered for another odd item in the recordings, smoked salmon with `available: true`, `stockLevel: "lowStock"` and the label "Likely out of stock". The CLI prints `low stock (Likely out of stock)`, which is about as much as Instacart knows too.
 
