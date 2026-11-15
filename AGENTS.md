@@ -58,4 +58,5 @@
 ## Commit Convention
 
 - Use Angular/Conventional Commit subjects in English, with an optional scope, such as `feat: add post archive`, `docs(readme): update setup steps`, or `chore: update Astro dependencies`.
+- PR titles are Conventional Commit subjects (`feat: ...`, `fix(scope): ...`), because a squash merge makes the title the commit on the default branch; CI checks it.
 - Keep commit messages focused on the user-visible purpose of the change.
