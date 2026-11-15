@@ -50,7 +50,7 @@
 ## Engineering Policy
 
 - Prefer small, self-documenting changes with strict types, centralized constants, and no dead code.
-- Keep the AGPL license unchanged: this repository is licensed as `AGPL-3.0-only`.
+- Keep the AGPL license unchanged: this repository is licensed as `AGPL-3.0-or-later`.
 - Do not include secrets, personal credentials, private tokens, or generated secret material.
 - Do not weaken dependency, CI, or deployment security boundaries to make a task pass.
 - Do not commit changes unless explicitly requested.

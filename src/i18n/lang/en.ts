@@ -36,7 +36,7 @@ export default {
   },
   footer: {
     copyright: "Copyright",
-    allRightsReserved: "Source on GitHub (AGPL-3.0-only)",
+    allRightsReserved: "Source on GitHub (AGPL-3.0-or-later)",
   },
   pages: {
     tagTitle: "Tag",
