@@ -1,8 +1,8 @@
 ---
 title: "About"
-description: "About Sakina, a software engineer building CLI tools, browser extensions, and Minecraft mods."
+description: "Sakina writes command-line tools and DeepSeek Harness plugins."
 ---
 
-**Hi, I'm Sakina.** I'm a programmer who likes building fast, practical command-line tools, browser extensions, and Minecraft mods.
+I'm Sakina. I write command-line tools and plugins for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness), and once in a while a Minecraft mod. Most of them start the same way: a site I use every week has no API worth scripting, or a quick script got important enough that it needed tests.
 
-Most of my projects start because I got tired of clicking through a slow web UI or keeping a brittle one-off script alive. When a bug turns out to be interesting, I write it up here. The code is on [GitHub](https://github.com/soffits).
+When a bug turns out to be more interesting than it looked, I write it up here. The code is on [GitHub](https://github.com/soffits), and the [projects page](/projects/) lists what's active.

@@ -19,8 +19,8 @@ type ApiRepo = {
   archived: boolean;
 };
 
-// The blog's own repository isn't a project to show.
-const HIDDEN = new Set([`${GITHUB_USER}.github.io`]);
+// The blog and the profile README repositories aren't projects to show.
+const HIDDEN = new Set([`${GITHUB_USER}.github.io`, GITHUB_USER]);
 
 export async function getRepos(): Promise<Repo[]> {
   const headers: Record<string, string> = {
