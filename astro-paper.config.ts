@@ -5,7 +5,7 @@ export default defineAstroPaperConfig({
     url: "https://soffits.github.io/",
     title: "Sakina",
     description:
-      "Sakina's blog: developer tools, bugs, and notes from building things.",
+      "Sakina's blog, mostly about bugs in the small tools she makes.",
     author: "Sakina",
     profile: "https://github.com/soffits",
     lang: "en",

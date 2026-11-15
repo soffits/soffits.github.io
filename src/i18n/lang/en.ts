@@ -45,9 +45,8 @@ export default {
     tagsTitle: "Tags",
     tagsDesc: "Every topic I have written about.",
 
-    postsTitle: "Debugging notes and write-ups",
-    postsDesc:
-      "What broke, how I tracked it down, and what changed in the code.",
+    postsTitle: "Blog",
+    postsDesc: "Mostly bugs I ran into and how I fixed them.",
 
     archivesTitle: "Archives",
     archivesDesc: "Every post, grouped by year and month.",
