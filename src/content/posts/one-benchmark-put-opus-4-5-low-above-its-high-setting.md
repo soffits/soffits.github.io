@@ -2,8 +2,11 @@
 title: "One benchmark put Opus 4.5 on low effort 17 points above its high setting"
 description: "Scoring every model variant separately in ECI Live gave Claude Opus 4.5 (low) an ECI of 170.4 from a single DeepResearch Bench result, because that benchmark's fitted slope is nearly flat."
 pubDatetime: 2026-11-01
+modDatetime: 2026-11-15
 tags: ["ai-benchmarks", "statistics", "open-source"]
 ---
+
+The first time I scored ECI Live's models per reasoning setting, Claude Opus 4.5 on low effort came out 17 points above the same model on high. Nobody should believe that, and working out why it happened changed what the leaderboard is allowed to rank.
 
 Epoch's [`eci-public`](https://github.com/epoch-research/eci-public) code barely changes, but Epoch rebuilds its benchmark data every day, and I wanted an index that kept up with that. So [ECI Live](https://soffits.github.io/eci-live/) refits Epoch AI's [Capabilities Index](https://epoch.ai/eci) every day from Epoch's open benchmark data, using that same code in a public GitHub Actions run. The first version scored models the way Epoch does: one number per model, with every reasoning setting pooled together. Then I split it, so `GPT-6 Astra (max)` and `GPT-6 Astra (medium)` each get their own score.
 
@@ -43,10 +46,7 @@ Nine benchmarks is plenty by count. It is still a strange basis for putting a mo
 
 So General now means all-round. A variant is ranked only if its benchmarks cover four areas: maths and reasoning, coding, agentic tasks, and knowledge. The areas come from the domain tags on [Epoch's benchmark hub](https://epoch.ai/eci), not from a list I maintain, and the hub file is archived with each snapshot so the rule can be checked later. Variants that miss an area stay in the full table and on their own pages, marked provisional with what they're missing (for `GPT-6.1 Terra (max)`: no coding benchmark). They're never ranked or counted toward the chance of being #1. The leaderboard shows each model's highest-effort variant that qualifies. In today's snapshot, 143 of the 816 variants are ranked.
 
-Two smaller rules came out of the same day's work:
-
-- Results labelled "unknown" or "thinking" with no effort setting are folded into the model's top labelled variant, but only for benchmarks that variant has no result of its own on. The detail page marks them as borrowed. That gave `GPT-6 Astra (max)` six extra benchmarks, including Remote Labor Index and GSO-Bench.
-- The default line-up shows each model line's newest release even when it is still provisional, so an older generation doesn't come back just because the new one hasn't been benchmarked much yet. It needs at least three benchmarks before it shows by default.
+Two smaller rules came out of the same day's work. Results labelled "unknown" or "thinking" with no effort setting are folded into the model's top labelled variant, but only for benchmarks that variant has no result of its own on, and the detail page marks them as borrowed. That gave `GPT-6 Astra (max)` six extra benchmarks, including Remote Labor Index and GSO-Bench. And the default line-up shows each model line's newest release even when it is still provisional, so an older generation doesn't come back just because the new one hasn't been benchmarked much yet. It needs at least three benchmarks before it shows by default.
 
 ## What I'm still unsure about
 
