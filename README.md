@@ -33,6 +33,6 @@ npm run build
 
 ## License
 
-This repository is licensed under `AGPL-3.0-only`. See `LICENSE`.
+This repository is licensed under `AGPL-3.0-or-later`. See `LICENSE`.
 
 The theme code taken from AstroPaper by Sat Naing is under the MIT License; its licence text is in `LICENSE-ASTROPAPER`.
