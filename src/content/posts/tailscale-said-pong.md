@@ -35,4 +35,4 @@ ifdown tailscale
 /etc/init.d/tailscale restart
 ```
 
-In `firewall4`, I attached the zone directly to the `tailscale0` device rather than the inactive logical network (`input ACCEPT`, `output ACCEPT`, `forward REJECT`, since this router is only accessed directly and does not act as a subnet router or exit node). After restarting Tailscale, `tailscale0` kept its `/32` and `/128` addresses, table 52 stayed populated, and normal `ping`, SSH, and LuCI came back across restarts.
+In `firewall4`, I attached the zone directly to the `tailscale0` device rather than the inactive logical network (`input ACCEPT`, `output ACCEPT`, `forward REJECT`, since this router is only accessed directly and does not act as a subnet router or exit node). After restarting Tailscale, `tailscale0` kept its `/32` and `/128` addresses, table 52 stayed populated, and normal `ping`, SSH, and LuCI came back across restarts. I haven't clicked Auto Configure Firewall on that router since.
