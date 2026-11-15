@@ -59,4 +59,5 @@
 
 - Use Angular/Conventional Commit subjects in English, with an optional scope, such as `feat: add post archive`, `docs(readme): update setup steps`, or `chore: update Astro dependencies`.
 - PR titles are Conventional Commit subjects (`feat: ...`, `fix(scope): ...`), because a squash merge makes the title the commit on the default branch; CI checks it.
+- Versions follow semver, and the bump comes from the commit types since the last tag, not from feel: below 1.0, `feat` or a breaking change (`!` / `BREAKING CHANGE`) is a minor bump and `fix`/`perf` a patch; from 1.0, breaking is major, `feat` minor, `fix` patch; docs/ci/chore/test alone need no release.
 - Keep commit messages focused on the user-visible purpose of the change.
