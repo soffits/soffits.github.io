@@ -1,17 +1,18 @@
 ---
 title: "Instacart marked the pasta available and unavailable"
-description: "Giving an Instacart CLI stock and price data required choosing between two conflicting availability fields and preventing a single null price from breaking an entire search."
+description: "Instacart's item data has two availability fields that can disagree, and one null price was enough to fail a whole search in the CLI."
 pubDatetime: 2026-11-08
+modDatetime: 2026-11-14
 tags: ["go", "graphql", "open-source"]
 ---
 
-The Instacart CLI inside [printing-press-library](https://github.com/mvanhorn/printing-press-library/tree/main/library/commerce/instacart) supports store searches, item additions, and cart display. Before this week, `cart show` output only names and quantities. On the website, that same cart carried a note beneath Tomato on the Vine: "This item is not available in your area." Nothing in the CLI reflected this, meaning an unavailable item could remain in a cart until a person chanced to visit the web page.
+Inside [printing-press-library](https://github.com/mvanhorn/printing-press-library/tree/main/library/commerce/instacart), the Instacart CLI lets you look up a store, add products, and view the cart. Before this week, running `cart show` gave you only names and quantities. The website showed a note beneath Tomato on the Vine for that same cart: "This item is not available in your area." That never appeared in the CLI, which meant a dead item could stay put in the cart unless someone opened the web page by chance.
 
-The fix I made is now merged under [#2432](https://github.com/mvanhorn/printing-press-library/pull/2432). It additionally allows the host to be configured, enabling the CLI to run against instacart.ca, though that portion is routine infrastructure. What proved interesting was examining Instacart's actual responses.
+I got my fix merged as [#2432](https://github.com/mvanhorn/printing-press-library/pull/2432). It also adds a host option, so you can point the CLI at instacart.ca, though that piece is just plumbing. What mattered was what the responses from Instacart really contain.
 
-## Which field actually reports stock?
+## What field really tells you about stock?
 
-Neither price nor availability appears in the cart query, `CartData`. Those details come to the web app through a different persisted query, `Items`, whose response includes an availability block for each item. Below is a trimmed example from the live responses I captured for the tests:
+`CartData`, the cart query, carries neither price nor availability. The web app pulls those from a separate persisted query called `Items`, and that query gives back an availability block for each item. Below is a shortened example taken from live responses I captured for the tests:
 
 ```json
 {
@@ -27,15 +28,15 @@ Neither price nor availability appears in the cart query, `CartData`. Those deta
 }
 ```
 
-`stockLevel` looks like the obvious first choice because it carries the greatest detail (`highlyInStock`, `inStock`, `lowStock`, `outOfStock`). For this item it reports `inStock`. Yet the boolean, the shopper-facing label, and the "Show similar" button each indicate the reverse. A CLI relying on `stockLevel` would display the pasta as available.
+At first, `stockLevel` seems like the right field, because it carries the most detail (`highlyInStock`, `inStock`, `lowStock`, `outOfStock`). In this case it reads `inStock`. The boolean says the opposite, and so do the label customers see and the button marked "Show similar". If the CLI believed `stockLevel`, it would report that the pasta is in stock.
 
-Therefore `available` is the deciding field. Only afterward does `stockLevel` come into play, separating "low stock" from "in stock", and Instacart's label appears beside that value when it says something more. This matters for a second strange recorded item: smoked salmon with `available: true`, `stockLevel: "lowStock"`, and the label "Likely out of stock". Its output is `low stock (Likely out of stock)`, an honest reflection of what Instacart knows.
+That leaves `available` as the deciding field. Only after that does `stockLevel` matter, and then just to tell "low stock" from "in stock"; Instacart's own label sits beside it when the label adds something. That distinction matters for another strange item among the recordings: smoked salmon where `available: true`, `stockLevel: "lowStock"`, and the label reads "Likely out of stock". The CLI shows `low stock (Likely out of stock)`, and that's close to the limit of what Instacart knows too.
 
-A possible explanation for the conflict is that `stockLevel` resembles a store inventory estimate, while `available` might additionally account for whether delivery to this address is possible, matching the "not available in your area" phrasing. I have found no Instacart material confirming that theory, so the code does not rely on it. Instead, the field consistent with the website is treated as authoritative. After the patch, `search` returned the tomatoes flagged by the web cart as `UNAVAILABLE (Out of stock)`.
+I suspect `stockLevel` is an estimate from store inventory, but `available` also verifies delivery to your address; that would explain the "not available in your area" wording. I found no confirmation from Instacart, so the code doesn't rely on that theory. It simply trusts whichever field matches the website. Once the patch was in, `search` listed the web-cart tomatoes as `UNAVAILABLE (Out of stock)`.
 
-## How a single null price broke the search
+## How a single null price took down search
 
-A recorded `Items` response included the following alongside its data:
+A recorded `Items` response included this beside its data:
 
 ```json
 "errors": [
@@ -43,8 +44,8 @@ A recorded `Items` response included the following alongside its data:
 ]
 ```
 
-Strawberries were item 4, unavailable, and had `price: null`. The rest of the response was valid. GraphQL permits this pattern: one field fails and turns into `null`, the error names the path, and the remaining `data` still comes through. The CLI client converts every `errors` entry into a Go error, and `search` quit the moment it encountered one. A single unavailable item lacking a price caused the entire search to fail.
+Item 4 was strawberries, unavailable, with `price: null`. The rest of the response was fine. GraphQL permits this: a single field fails and turns into `null`, the error names its path, and `data` still arrives for everything else. The CLI client made every `errors` entry a Go error, then `search` quit at the first one. A single unavailable item with no price was enough to kill the entire search.
 
-Now `search` parses any `data` that arrives and fails only if the error leaves nothing displayable. The parser additionally ignores `null` entries in the `items` list, and the same response contained one such entry. Within `cart show`, any line absent from `Items` is labeled `availability unknown` rather than silently appearing normal.
+Now `search` works with whatever `data` arrives, and it fails only if that error leaves no results to display. The parser also drops `null` entries from the `items` list, since that response had one as well. For `cart show`, any line missing from `Items` now gets `availability unknown` rather than looking normal.
 
-Those real responses, scrubbed, form the test data, and the null entry, the inconsistent pasta, and the `Internal Error` remain present. Had I written a fixture manually, it would likely have assigned a price to every item.
+The test data consists of those real responses, cleaned up, and it still includes a null entry, the contradictory pasta, and the `Internal Error`. If I'd written a fixture myself, I probably would've given each item a price.
