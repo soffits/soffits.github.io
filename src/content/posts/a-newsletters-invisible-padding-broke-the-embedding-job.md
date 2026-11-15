@@ -5,7 +5,7 @@ pubDatetime: 2026-11-15
 tags: ["rummage", "embeddings", "llama-cpp"]
 ---
 
-[rummage](https://github.com/soffits/rummage) is the local search tool I use for my own notes, chat history and mail. A job refreshes its index every hour. This morning the run at 3:17 failed with:
+The hourly index refresh for [rummage](https://github.com/soffits/rummage), the local search tool I use for my own notes, chat history and mail, failed at 3:17 this morning on a passage that was too long for the embedding server, though not in characters:
 
 ```
 rummage.runtime.EmbedError: /v1/embeddings: HTTP 500
