@@ -21,7 +21,7 @@ Tucked in, the visible half of the 36px button covers the strip from `0px` to `1
 
 Our browser test pointed `6px` from the right edge, waited for the button to slide out, and clicked. On the `0.2.0-beta.12` release commit it started timing out, failing 3 times out of 5 locally. At `6px` from the edge, the pointer hovers the tucked button, the button slides over to `8px–44px`, `:hover` immediately drops because the button is no longer under the cursor, the button slides back, and the next pointer event starts the cycle all over again. (In headless Chromium, `:hover` is only re-evaluated when a pointer event fires, so a stationary synthetic cursor stayed put while a real hand or repeated mouse events made the button bounce between `756px` and `769px`.)
 
-[PR #122](https://github.com/Lumysia/OpenBrowserAgent/pull/122) bridges that `8px` gap with an invisible `::after` pseudo-element on the dock:
+The fix bridges that `8px` gap with an invisible `::after` pseudo-element on the dock:
 
 ```css
 .page-button-dock::after {
