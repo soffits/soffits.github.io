@@ -8,7 +8,7 @@ tags: ["python", "open-source"]
 
 ikea-cli 0.1.0 only knew IKEA Canada, and 0.2.0 covers the 51 countries IKEA serves from `www.ikea.com/<country>/<language>/`. Getting there turned up German prices with two dots in them and a login check that passed while IKEA was rejecting the login.
 
-I wrote [ikea-cli](https://github.com/soffits/ikea-cli) because I wanted to check stock and fill an IKEA cart from a terminal instead of clicking through the site. Canada came first because it's the one I use.
+I wrote [ikea-cli](https://github.com/soffits/ikea-cli) because I wanted to check stock and fill an IKEA cart from a terminal instead of clicking through the site.
 
 I didn't want to keep a country table up to date by hand, so `scripts/update_markets.py` builds `markets.json` from IKEA's live site. It looks at:
 
@@ -47,4 +47,4 @@ The first version of the table said 32 markets could log in. Dropping Saudi Arab
 
 The generator now runs read-only guest probes in each market and records which endpoints work. Of the 51 markets in `markets.json`, 30 support login, cart, favourites and delivery. The other 21 only get search, product pages, stores and stock, and Ukraine is marked unusable online because it lists no products. In those 21, `ikea cart` stops early and tells you why instead of failing with a raw 401.
 
-I ran the 44-check guest test suite live against Canada (English and French), the US, the UK, Germany, France, Sweden, Spain, Japan, South Korea and Australia, plus the search and stock checks in the UAE. That turned up a South Korea delivery bug: the fulfilment API wanted `""` instead of `null` for an empty state code. Real account login, cart and order history have only been tested with a Canadian account so far, and the README table says which markets have been tested end to end. I'd like that list to be longer, but a Canadian account is all I can test with, and guest endpoints answering doesn't show that sign-in works.
+I ran the 44-check guest test suite live against Canada (English and French), the US, the UK, Germany, France, Sweden, Spain, Japan, South Korea and Australia, plus the search and stock checks in the UAE. That turned up a South Korea delivery bug: the fulfilment API wanted `""` instead of `null` for an empty state code. Real account login, cart and order history have only been tested with a Canadian account so far, and the README table says which markets have been tested end to end. I'd like that list to be longer, since guest endpoints answering doesn't show that sign-in works.

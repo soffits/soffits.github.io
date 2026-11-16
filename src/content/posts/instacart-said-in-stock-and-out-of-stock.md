@@ -10,7 +10,7 @@ I help someone in my family with their grocery orders, and I'd been putting the 
 
 Then they opened the cart on the website before an order and asked me why two of the things said they weren't available. There were actually three. Under the vine tomatoes, for one, it said "This item is not available in your area." I hadn't seen any of it, because `cart show` only listed names and quantities. A dead item could sit in that cart until a person happened to open the web page, and this time the person wasn't me.
 
-That stung a little, so I fixed it. The change is merged as [#2432](https://github.com/mvanhorn/printing-press-library/pull/2432). It also adds a host option so you can point the CLI at instacart.ca, but that part is plumbing. What I didn't expect was how hard it was to get a straight answer out of Instacart's own data.
+That stung a little, so I fixed it. The change is merged as [#2432](https://github.com/mvanhorn/printing-press-library/pull/2432). It also adds a host option so the CLI isn't tied to one Instacart site, but that part is plumbing. What I didn't expect was how hard it was to get a straight answer out of Instacart's own data.
 
 ## Which field to believe
 
