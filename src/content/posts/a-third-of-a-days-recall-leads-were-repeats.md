@@ -13,7 +13,7 @@ It had been live for two days when I wanted to know whether it was any good. rum
 
 426 recalls, 1,583 leads. Two things stood out.
 
-577 of the leads (36%) came from the "recent turns" part, which adds messages from other chat sessions in the last few minutes. Nearly all were messages the user had sent in a parallel conversation. The bar for them was one term in common with the prompt, and in Chinese the shared terms were common two-character pairs, so they matched almost anything.
+577 of the leads (36%) came from the "recent turns" part, which adds messages from other chat sessions in the last few minutes. Nearly all were things I'd just typed in another conversation running at the same time. The bar for them was one term in common with the prompt, and in Chinese the shared terms were common two-character pairs, so they matched almost anything.
 
 Then the repeats. 382 of those 577 recent leads had already been shown to the same session within the previous six hours. Across the whole day, about a third of all leads were something the session had already been given, and one item had been given sixteen times. The model still has the earlier block in its context, so that's wasted space.
 
